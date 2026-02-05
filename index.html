@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="PHANTOM AI - Your Ultimate AI Assistant for Interviews, Content Creation, and Daily Tasks. Powered by Gemini, OpenAI, Claude & Groq.">
+    <meta name="keywords" content="AI Assistant, Interview Helper, Voice Recognition, Gemini AI, OpenAI, Claude, Groq">
+    <title>PHANTOM AI - Ultimate AI Assistant</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+            color: #ffffff;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 2px solid rgba(0, 255, 136, 0.3);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            background: linear-gradient(135deg, #00ff88, #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(0, 255, 136, 0.5);
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin-left: 30px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        nav a:hover {
+            color: #00ff88;
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.8);
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 100px 20px;
+            background: radial-gradient(circle at 50% 50%, rgba(0, 255, 136, 0.1), transparent 70%);
+        }
+
+        .hero h1 {
+            font-size: 56px;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #00ff88, #00d4ff, #ff00ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: glow 3s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.3); }
+        }
+
+        .hero p {
+            font-size: 22px;
+            color: #b0b0b0;
+            margin-bottom: 40px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 18px 50px;
+            background: linear-gradient(135deg, #00ff88, #00d4ff);
+            color: #000;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 50px;
+            transition: all 0.3s;
+            box-shadow: 0 10px 40px rgba(0, 255, 136, 0.4);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 50px rgba(0, 255, 136, 0.6);
+        }
+
+        /* Features Section */
+        .features {
+            padding: 80px 20px;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .features h2 {
+            text-align: center;
+            font-size: 42px;
+            margin-bottom: 60px;
+            background: linear-gradient(135deg, #00ff88, #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+        }
+
+        .feature-card {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(0, 212, 255, 0.1));
+            padding: 40px;
+            border-radius: 20px;
+            border: 2px solid rgba(0, 255, 136, 0.2);
+            transition: all 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            border-color: #00ff88;
+            box-shadow: 0 20px 60px rgba(0, 255, 136, 0.3);
+        }
+
+        .feature-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #00ff88;
+        }
+
+        .feature-card p {
+            color: #b0b0b0;
+            line-height: 1.8;
+        }
+
+        /* Video Demo Section */
+        .video-demo {
+            padding: 80px 20px;
+            text-align: center;
+        }
+
+        .video-demo h2 {
+            font-size: 42px;
+            margin-bottom: 40px;
+            background: linear-gradient(135deg, #00ff88, #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .video-container {
+            max-width: 900px;
+            margin: 0 auto;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 255, 136, 0.3);
+            background: rgba(0, 0, 0, 0.5);
+            padding: 40px;
+            border: 2px solid rgba(0, 255, 136, 0.3);
+        }
+
+        .video-placeholder {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(0, 212, 255, 0.1));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: #00ff88;
+            border-radius: 10px;
+            border: 2px dashed rgba(0, 255, 136, 0.3);
+        }
+
+        .video-placeholder iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 10px;
+        }
+
+        /* Pricing Section */
+        .pricing {
+            padding: 80px 20px;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .pricing h2 {
+            text-align: center;
+            font-size: 42px;
+            margin-bottom: 60px;
+            background: linear-gradient(135deg, #00ff88, #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .pricing-card {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.05), rgba(0, 212, 255, 0.05));
+            padding: 50px 40px;
+            border-radius: 20px;
+            border: 2px solid rgba(0, 255, 136, 0.2);
+            text-align: center;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-10px);
+            border-color: #00ff88;
+            box-shadow: 0 20px 60px rgba(0, 255, 136, 0.3);
+        }
+
+        .pricing-card.featured {
+            border-color: #00ff88;
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.15), rgba(0, 212, 255, 0.15));
+            transform: scale(1.05);
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: -15px;
+            right: 20px;
+            background: linear-gradient(135deg, #00ff88, #00d4ff);
+            color: #000;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .pricing-card h3 {
+            font-size: 28px;
+            margin-bottom: 15px;
+            color: #00ff88;
+        }
+
+        .price {
+            font-size: 48px;
+            font-weight: bold;
+            margin: 20px 0;
+            color: #fff;
+        }
+
+        .period {
+            font-size: 18px;
+            color: #b0b0b0;
+            margin-bottom: 30px;
+        }
+
+        .features-list {
+            list-style: none;
+            margin-bottom: 40px;
+            text-align: left;
+        }
+
+        .features-list li {
+            padding: 12px 0;
+            color: #b0b0b0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .features-list li:before {
+            content: "✓ ";
+            color: #00ff88;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .buy-button {
+            display: inline-block;
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #00ff88, #00d4ff);
+            color: #000;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 50px;
+            transition: all 0.3s;
+        }
+
+        .buy-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.5);
+        }
+
+        /* Download Section */
+        .download {
+            padding: 80px 20px;
+            text-align: center;
+        }
+
+        .download h2 {
+            font-size: 42px;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #00ff88, #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .download p {
+            font-size: 20px;
+            color: #b0b0b0;
+            margin-bottom: 40px;
+        }
+
+        .download-buttons {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .download-button {
+            padding: 20px 50px;
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.2), rgba(0, 212, 255, 0.2));
+            border: 2px solid #00ff88;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: bold;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .download-button:hover {
+            background: linear-gradient(135deg, #00ff88, #00d4ff);
+            color: #000;
+            transform: translateY(-5px);
+            box-shadow: 0 15px 50px rgba(0, 255, 136, 0.4);
+        }
+
+        .download-button.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        /* Requirements Section */
+        .requirements {
+            padding: 80px 20px;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .requirements h2 {
+            text-align: center;
+            font-size: 42px;
+            margin-bottom: 60px;
+            background: linear-gradient(135deg, #00ff88, #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .requirements-content {
+            max-width: 800px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(0, 212, 255, 0.1));
+            padding: 40px;
+            border-radius: 20px;
+            border: 2px solid rgba(0, 255, 136, 0.2);
+        }
+
+        .requirement-item {
+            display: flex;
+            align-items: start;
+            margin-bottom: 25px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .requirement-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .requirement-icon {
+            font-size: 32px;
+            margin-right: 20px;
+            flex-shrink: 0;
+        }
+
+        .requirement-text h4 {
+            color: #00ff88;
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+
+        .requirement-text p {
+            color: #b0b0b0;
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 60px 20px 30px;
+            border-top: 2px solid rgba(0, 255, 136, 0.3);
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-section h3 {
+            color: #00ff88;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+
+        .footer-section p,
+        .footer-section a {
+            color: #b0b0b0;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 10px;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: #00ff88;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #666;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 36px;
+            }
+
+            .hero p {
+                font-size: 18px;
+            }
+
+            .pricing-card.featured {
+                transform: scale(1);
+            }
+
+            nav {
+                display: none;
+            }
+        }
+
+        /* Call to Action */
+        .cta-section {
+            padding: 80px 20px;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(0, 212, 255, 0.1));
+        }
+
+        .cta-section h2 {
+            font-size: 42px;
+            margin-bottom: 30px;
+            color: #fff;
+        }
+
+        .cta-section p {
+            font-size: 20px;
+            color: #b0b0b0;
+            margin-bottom: 40px;
+        }
+
+        .note-box {
+            background: rgba(255, 200, 0, 0.1);
+            border: 2px solid rgba(255, 200, 0, 0.3);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 40px auto;
+            max-width: 900px;
+        }
+
+        .note-box h3 {
+            color: #ffc800;
+            margin-bottom: 15px;
+            font-size: 24px;
+        }
+
+        .note-box ul {
+            list-style: none;
+            text-align: left;
+        }
+
+        .note-box li {
+            color: #b0b0b0;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .note-box li:before {
+            content: "⚠️ ";
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-content">
+            <div class="logo">🧠 PHANTOM AI</div>
+            <nav>
+                <a href="#features">Features</a>
+                <a href="#demo">Demo</a>
+                <a href="#pricing">Pricing</a>
+                <a href="#download">Download</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>🚀 PHANTOM AI v2.1</h1>
+            <p>Your Ultimate AI-Powered Assistant for Interviews, Research, Content Creation & Daily Tasks. Powered by Gemini, OpenAI, Claude & Groq with Real-Time Voice Recognition.</p>
+            <a href="#pricing" class="cta-button">Get Started Now</a>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="container">
+            <h2>✨ Powerful Features</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🤖</div>
+                    <h3>Multi-AI Integration</h3>
+                    <p>Access Gemini, OpenAI GPT-4, Claude Sonnet, and Groq in one place. Switch between models instantly for optimal results.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎙️</div>
+                    <h3>Voice Recognition</h3>
+                    <p>Advanced Speech-to-Text with FREE mode (Google Web Speech) or CLOUD mode (Google Cloud STT) for premium accuracy.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💼</div>
+                    <h3>Interview Assistant</h3>
+                    <p>Real-time question detection and AI-powered answers. Stay on top during technical interviews and meetings.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📝</div>
+                    <h3>Content Creation</h3>
+                    <p>Generate articles, code, summaries, and creative content with multiple AI models at your fingertips.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🌐</div>
+                    <h3>Web Search Integration</h3>
+                    <p>Built-in web search powered by SearXNG for up-to-date information and research capabilities.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎨</div>
+                    <h3>Customizable UI</h3>
+                    <p>Multiple themes, transparency modes, split-screen view, and floating overlay for seamless multitasking.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📚</div>
+                    <h3>Resume Analyzer</h3>
+                    <p>Upload your resume and get AI-optimized answers tailored to your skills and experience.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h3>Secure Licensing</h3>
+                    <p>Hardware-locked licenses with GitHub-based validation. Your purchase is protected and easy to manage.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Video Demo Section -->
+    <section id="demo" class="video-demo">
+        <div class="container">
+            <h2>🎬 See PHANTOM AI in Action</h2>
+            <div class="video-container">
+                <div class="video-placeholder">
+                    <!-- Replace this div with your YouTube video embed -->
+                    <!-- Example: <iframe src="https://www.youtube.com/embed/YOUR_VIDEO_ID" allowfullscreen></iframe> -->
+                    📹 Video Demo Coming Soon!<br>
+                    <small style="font-size: 16px; color: #666; display: block; margin-top: 10px;">
+                        Watch how PHANTOM AI helps in real-time interviews and daily tasks
+                    </small>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="pricing">
+        <div class="container">
+            <h2>💰 Simple & Affordable Pricing</h2>
+            <div class="pricing-grid">
+                <!-- 1 Day Plan -->
+                <div class="pricing-card">
+                    <h3>Trial Plan</h3>
+                    <div class="price">₹100</div>
+                    <div class="period">1 Day Access</div>
+                    <ul class="features-list">
+                        <li>Full Feature Access</li>
+                        <li>All AI Models (Gemini, GPT-4, Claude, Groq)</li>
+                        <li>Voice Recognition</li>
+                        <li>Interview Assistant</li>
+                        <li>Resume Analyzer</li>
+                        <li>Web Search</li>
+                        <li>Perfect for Testing</li>
+                    </ul>
+                    <a href="mailto:nitinsaini077@gmail.com?subject=PHANTOM AI - 1 Day License Request&body=Hi, I want to purchase the 1 Day License for ₹100.%0D%0A%0D%0AMy Details:%0D%0AName: %0D%0AEmail: " class="buy-button">Buy Now</a>
+                </div>
+
+                <!-- 3 Days Plan (Featured) -->
+                <div class="pricing-card featured">
+                    <div class="popular-badge">⭐ MOST POPULAR</div>
+                    <h3>Standard Plan</h3>
+                    <div class="price">₹500</div>
+                    <div class="period">3 Days Access</div>
+                    <ul class="features-list">
+                        <li>Full Feature Access</li>
+                        <li>All AI Models (Gemini, GPT-4, Claude, Groq)</li>
+                        <li>Voice Recognition</li>
+                        <li>Interview Assistant</li>
+                        <li>Resume Analyzer</li>
+                        <li>Web Search</li>
+                        <li>Priority Email Support</li>
+                        <li>Best Value for Short-term Use</li>
+                    </ul>
+                    <a href="mailto:nitinsaini077@gmail.com?subject=PHANTOM AI - 3 Days License Request&body=Hi, I want to purchase the 3 Days License for ₹500.%0D%0A%0D%0AMy Details:%0D%0AName: %0D%0AEmail: " class="buy-button">Buy Now</a>
+                </div>
+
+                <!-- 1 Month Plan -->
+                <div class="pricing-card">
+                    <h3>Premium Plan</h3>
+                    <div class="price">₹2000</div>
+                    <div class="period">1 Month Access</div>
+                    <ul class="features-list">
+                        <li>Full Feature Access</li>
+                        <li>All AI Models (Gemini, GPT-4, Claude, Groq)</li>
+                        <li>Voice Recognition</li>
+                        <li>Interview Assistant</li>
+                        <li>Resume Analyzer</li>
+                        <li>Web Search</li>
+                        <li>Priority Support</li>
+                        <li>Regular Updates</li>
+                        <li>Best for Professional Use</li>
+                    </ul>
+                    <a href="mailto:nitinsaini077@gmail.com?subject=PHANTOM AI - 1 Month License Request&body=Hi, I want to purchase the 1 Month License for ₹2000.%0D%0A%0D%0AMy Details:%0D%0AName: %0D%0AEmail: " class="buy-button">Buy Now</a>
+                </div>
+            </div>
+
+            <!-- Important Notes -->
+            <div class="note-box">
+                <h3>⚠️ Important Notes</h3>
+                <ul>
+                    <li><strong>API Keys Required:</strong> You need your own API keys for Gemini/OpenAI/Claude/Groq (Free tiers available)</li>
+                    <li><strong>Optional STT:</strong> Google Cloud STT is optional - FREE mode works without any setup</li>
+                    <li><strong>Regular Updates:</strong> Get the latest features and improvements during your license period</li>
+                    <li><strong>Instant Activation:</strong> Receive license key via email within 24 hours after payment verification</li>
+                    <li><strong>Hardware Locked:</strong> License is locked to your device for security</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Download Section -->
+    <section id="download" class="download">
+        <div class="container">
+            <h2>⬇️ Download PHANTOM AI</h2>
+            <p>Get the latest version and start boosting your productivity today!</p>
+            <div class="download-buttons">
+                <a href="#" class="download-button disabled">
+                    <span>🪟</span>
+                    <span>Download for Windows (Coming Soon)</span>
+                </a>
+                <a href="https://github.com/SainiONHacks/phantom-ai-licenses" class="download-button" target="_blank">
+                    <span>📚</span>
+                    <span>View Documentation</span>
+                </a>
+            </div>
+            <p style="margin-top: 30px; color: #ffc800;">💡 Windows EXE will be available after license system testing</p>
+        </div>
+    </section>
+
+    <!-- Requirements Section -->
+    <section class="requirements">
+        <div class="container">
+            <h2>📋 System Requirements</h2>
+            <div class="requirements-content">
+                <div class="requirement-item">
+                    <div class="requirement-icon">💻</div>
+                    <div class="requirement-text">
+                        <h4>Operating System</h4>
+                        <p>Windows 10/11 (64-bit)</p>
+                    </div>
+                </div>
+                <div class="requirement-item">
+                    <div class="requirement-icon">🔑</div>
+                    <div class="requirement-text">
+                        <h4>API Keys (Free Available)</h4>
+                        <p>Gemini API (Free tier: 15 requests/min) or OpenAI/Claude/Groq API keys</p>
+                    </div>
+                </div>
+                <div class="requirement-item">
+                    <div class="requirement-icon">🎤</div>
+                    <div class="requirement-text">
+                        <h4>Microphone (Optional)</h4>
+                        <p>Required for voice recognition features. Built-in or external microphone supported.</p>
+                    </div>
+                </div>
+                <div class="requirement-item">
+                    <div class="requirement-icon">🌐</div>
+                    <div class="requirement-text">
+                        <h4>Internet Connection</h4>
+                        <p>Required for AI API calls and license validation</p>
+                    </div>
+                </div>
+                <div class="requirement-item">
+                    <div class="requirement-icon">💾</div>
+                    <div class="requirement-text">
+                        <h4>Storage & Memory</h4>
+                        <p>100MB free disk space, 4GB RAM minimum (8GB recommended)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <h2>Ready to Supercharge Your Workflow? 🚀</h2>
+            <p>Join hundreds of professionals using PHANTOM AI for interviews, research, and productivity.</p>
+            <a href="#pricing" class="cta-button">Start Your Trial - ₹100 Only!</a>
+            <p style="margin-top: 30px; font-size: 16px;">
+                🎁 <strong>FREE 1-DAY DEMO</strong> available! Try before you buy with demo key: <code style="background: rgba(0,255,136,0.2); padding: 5px 15px; border-radius: 5px; color: #00ff88;">DEMO-DEMO-DEMO-DEMO-DEMO</code>
+            </p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>PHANTOM AI</h3>
+                    <p>Ultimate AI Assistant for professionals, students, and anyone looking to boost productivity with cutting-edge AI technology.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <a href="#features">Features</a>
+                    <a href="#demo">Demo Video</a>
+                    <a href="#pricing">Pricing</a>
+                    <a href="#download">Download</a>
+                </div>
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <a href="mailto:nitinsaini077@gmail.com">Email Support</a>
+                    <a href="https://github.com/SainiONHacks/phantom-ai-licenses" target="_blank">GitHub Repository</a>
+                    <a href="https://github.com/SainiONHacks/phantom-ai-licenses/issues" target="_blank">Report Issues</a>
+                </div>
+                <div class="footer-section">
+                    <h3>Legal</h3>
+                    <p>© 2026 PHANTOM AI</p>
+                    <p>All rights reserved.</p>
+                    <p>Made with 💚 by Nitin Saini</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>PHANTOM AI v2.1 - Powered by Gemini, OpenAI, Claude & Groq</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add animation on scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        });
+
+        document.querySelectorAll('.feature-card, .pricing-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'all 0.6s ease-out';
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
