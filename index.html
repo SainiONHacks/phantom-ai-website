@@ -581,15 +581,16 @@
 
         .purchase-modal-content {
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            margin: 5% auto;
+            margin: 2% auto;
             padding: 0;
             border: 2px solid #00ff88;
             border-radius: 15px;
             width: 90%;
             max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
             box-shadow: 0 20px 60px rgba(0, 255, 136, 0.3);
             animation: slideDown 0.3s ease-out;
-            overflow: hidden;
         }
 
         .purchase-modal-header {
@@ -622,11 +623,11 @@
         }
 
         .purchase-modal-body {
-            padding: 30px;
+            padding: 20px;
         }
 
         .purchase-form-group {
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         .purchase-form-group label {
@@ -660,7 +661,7 @@
 
         .purchase-form-group textarea {
             resize: vertical;
-            min-height: 80px;
+            min-height: 60px;
             font-family: inherit;
         }
 
@@ -668,8 +669,8 @@
             background: rgba(0, 255, 136, 0.1);
             border: 2px solid rgba(0, 255, 136, 0.3);
             border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 20px;
+            padding: 12px;
+            margin-bottom: 15px;
         }
 
         .plan-details p {
