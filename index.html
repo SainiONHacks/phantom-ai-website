@@ -564,6 +564,159 @@
             content: "⚠️ ";
             margin-right: 10px;
         }
+
+        /* Purchase Modal Styles */
+        .purchase-modal {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .purchase-modal-content {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            margin: 5% auto;
+            padding: 0;
+            border: 2px solid #00ff88;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 20px 60px rgba(0, 255, 136, 0.3);
+            animation: slideDown 0.3s ease-out;
+            overflow: hidden;
+        }
+
+        .purchase-modal-header {
+            background: linear-gradient(135deg, #00ff88 0%, #00d4aa 100%);
+            color: #000;
+            padding: 20px;
+            position: relative;
+        }
+
+        .purchase-modal-header h2 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .purchase-modal-close {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            color: #000;
+            font-size: 32px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+            line-height: 1;
+        }
+
+        .purchase-modal-close:hover {
+            transform: scale(1.2) rotate(90deg);
+        }
+
+        .purchase-modal-body {
+            padding: 30px;
+        }
+
+        .purchase-form-group {
+            margin-bottom: 20px;
+        }
+
+        .purchase-form-group label {
+            display: block;
+            color: #00ff88;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .purchase-form-group input,
+        .purchase-form-group textarea {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(0, 255, 136, 0.3);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 14px;
+            transition: all 0.3s;
+            box-sizing: border-box;
+        }
+
+        .purchase-form-group input:focus,
+        .purchase-form-group textarea:focus {
+            outline: none;
+            border-color: #00ff88;
+            background: rgba(0, 255, 136, 0.1);
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
+        }
+
+        .purchase-form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+            font-family: inherit;
+        }
+
+        .plan-details {
+            background: rgba(0, 255, 136, 0.1);
+            border: 2px solid rgba(0, 255, 136, 0.3);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .plan-details p {
+            margin: 5px 0;
+            color: #fff;
+            font-size: 14px;
+        }
+
+        .plan-details strong {
+            color: #00ff88;
+        }
+
+        .purchase-submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #00ff88 0%, #00d4aa 100%);
+            color: #000;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .purchase-submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.4);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
     </style>
 </head>
 <body>
@@ -675,7 +828,7 @@
                         <li>Web Search</li>
                         <li>Perfect for Testing</li>
                     </ul>
-                    <a href="mailto:nitinsaini077@gmail.com?subject=PHANTOM AI - 1 Day License Request&body=Hi, I want to purchase the 1 Day License for ₹100.%0D%0A%0D%0AMy Details:%0D%0AName: %0D%0AEmail: " class="buy-button">Buy Now</a>
+                    <a href="#" onclick="openPurchaseForm('1 Day Plan', 100, 1); return false;" class="buy-button">Buy Now</a>
                 </div>
 
                 <!-- 3 Days Plan (Featured) -->
@@ -694,7 +847,7 @@
                         <li>Priority Email Support</li>
                         <li>Best Value for Short-term Use</li>
                     </ul>
-                    <a href="mailto:nitinsaini077@gmail.com?subject=PHANTOM AI - 3 Days License Request&body=Hi, I want to purchase the 3 Days License for ₹500.%0D%0A%0D%0AMy Details:%0D%0AName: %0D%0AEmail: " class="buy-button">Buy Now</a>
+                    <a href="#" onclick="openPurchaseForm('3 Days Plan', 500, 3); return false;" class="buy-button">Buy Now</a>
                 </div>
 
                 <!-- 1 Month Plan -->
@@ -713,7 +866,7 @@
                         <li>Regular Updates</li>
                         <li>Best for Professional Use</li>
                     </ul>
-                    <a href="mailto:nitinsaini077@gmail.com?subject=PHANTOM AI - 1 Month License Request&body=Hi, I want to purchase the 1 Month License for ₹2000.%0D%0A%0D%0AMy Details:%0D%0AName: %0D%0AEmail: " class="buy-button">Buy Now</a>
+                    <a href="#" onclick="openPurchaseForm('1 Month Plan', 2000, 30); return false;" class="buy-button">Buy Now</a>
                 </div>
             </div>
 
@@ -871,6 +1024,95 @@
             el.style.transition = 'all 0.6s ease-out';
             observer.observe(el);
         });
+
+        // Purchase Form Functions
+        function openPurchaseForm(plan, price, days) {
+            document.getElementById('purchaseModal').style.display = 'block';
+            document.getElementById('selectedPlan').textContent = plan;
+            document.getElementById('selectedPrice').textContent = '₹' + price;
+            document.getElementById('selectedDays').textContent = days + (days === 1 ? ' Day' : ' Days');
+            document.getElementById('hiddenPlan').value = plan + ' - ₹' + price + ' (' + days + (days === 1 ? ' Day' : ' Days') + ')';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closePurchaseForm() {
+            document.getElementById('purchaseModal').style.display = 'none';
+            document.getElementById('purchaseForm').reset();
+            document.body.style.overflow = 'auto';
+        }
+
+        function submitPurchaseForm(event) {
+            event.preventDefault();
+            const form = event.target;
+            const formData = new FormData(form);
+            
+            fetch('https://formsubmit.co/nitinsaini077@gmail.com', {
+                method: 'POST',
+                body: formData
+            }).then(response => {
+                if (response.ok) {
+                    alert('✅ Purchase request sent successfully! We will contact you shortly with payment details.');
+                    closePurchaseForm();
+                } else {
+                    alert('❌ Failed to send request. Please try again or contact us directly at nitinsaini077@gmail.com');
+                }
+            }).catch(error => {
+                alert('❌ Network error. Please try again or contact us directly at nitinsaini077@gmail.com');
+            });
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('purchaseModal');
+            if (event.target === modal) {
+                closePurchaseForm();
+            }
+        }
     </script>
+
+    <!-- Purchase Modal -->
+    <div id="purchaseModal" class="purchase-modal">
+        <div class="purchase-modal-content">
+            <div class="purchase-modal-header">
+                <h2>🛒 Purchase License</h2>
+                <span class="purchase-modal-close" onclick="closePurchaseForm()">&times;</span>
+            </div>
+            <div class="purchase-modal-body">
+                <div class="plan-details">
+                    <p><strong>Selected Plan:</strong> <span id="selectedPlan"></span></p>
+                    <p><strong>Price:</strong> <span id="selectedPrice"></span></p>
+                    <p><strong>Duration:</strong> <span id="selectedDays"></span></p>
+                </div>
+                <form id="purchaseForm" onsubmit="submitPurchaseForm(event)">
+                    <input type="hidden" name="_subject" value="PHANTOM AI - Purchase Request">
+                    <input type="hidden" name="_captcha" value="false">
+                    <input type="hidden" name="_template" value="table">
+                    <input type="hidden" id="hiddenPlan" name="Selected Plan" value="">
+                    
+                    <div class="purchase-form-group">
+                        <label for="customerName">Full Name *</label>
+                        <input type="text" id="customerName" name="Customer Name" required placeholder="Enter your full name">
+                    </div>
+                    
+                    <div class="purchase-form-group">
+                        <label for="customerEmail">Email Address *</label>
+                        <input type="email" id="customerEmail" name="Email" required placeholder="your.email@example.com">
+                    </div>
+                    
+                    <div class="purchase-form-group">
+                        <label for="customerPhone">Phone Number (Optional)</label>
+                        <input type="tel" id="customerPhone" name="Phone" placeholder="+91 XXXXX XXXXX">
+                    </div>
+                    
+                    <div class="purchase-form-group">
+                        <label for="additionalNotes">Additional Notes (Optional)</label>
+                        <textarea id="additionalNotes" name="Additional Notes" placeholder="Any special requirements or questions..."></textarea>
+                    </div>
+                    
+                    <button type="submit" class="purchase-submit-btn">Send Purchase Request</button>
+                </form>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
