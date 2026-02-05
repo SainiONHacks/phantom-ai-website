@@ -53,6 +53,12 @@
             text-shadow: 0 0 30px rgba(0, 255, 136, 0.5);
         }
 
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
         nav a {
             color: #fff;
             text-decoration: none;
@@ -64,6 +70,25 @@
         nav a:hover {
             color: #00ff88;
             text-shadow: 0 0 20px rgba(0, 255, 136, 0.8);
+        }
+
+        .btn-login {
+            background: linear-gradient(135deg, #00ff88, #00d4ff);
+            color: #000;
+            padding: 10px 25px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-left: 20px;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0, 255, 136, 0.3);
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 255, 136, 0.5);
+            color: #000 !important;
+            text-shadow: none;
         }
 
         /* Hero Section */
@@ -551,6 +576,7 @@
                 <a href="#demo">Demo</a>
                 <a href="#pricing">Pricing</a>
                 <a href="#download">Download</a>
+                <a href="dashboard.html" class="btn-login">👤 Dashboard</a>
             </nav>
         </div>
     </header>
