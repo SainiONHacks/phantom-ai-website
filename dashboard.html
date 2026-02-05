@@ -264,28 +264,63 @@
     </style>
 </head>
 <body>
-    <!-- Login Form (shown when not logged in) -->
+    <!-- Login/Signup Form (shown when not logged in) -->
     <div id="loginSection" style="display:none;">
         <div class="login-form">
             <h1 style="text-align:center; margin-bottom:30px; color:#00ff88;">🧠 PHANTOM AI</h1>
-            <h2 style="text-align:center; margin-bottom:30px; color:#888; font-size:18px;">Dashboard Login</h2>
+            <h2 style="text-align:center; margin-bottom:20px; color:#888; font-size:18px;">Dashboard Access</h2>
             
-            <div class="form-group">
-                <label>📧 Email</label>
-                <input type="email" id="loginEmail" placeholder="your.email@example.com">
+            <!-- Tabs for Login/Signup -->
+            <div style="display:flex; gap:10px; margin-bottom:30px;">
+                <button id="tabLogin" class="btn" style="flex:1; padding:10px;" onclick="showLoginTab()">🔑 Login</button>
+                <button id="tabSignup" class="btn" style="flex:1; padding:10px; opacity:0.5;" onclick="showSignupTab()">✨ Sign Up</button>
             </div>
             
-            <div class="form-group">
-                <label>🔒 Password</label>
-                <input type="password" id="loginPassword" placeholder="Enter password">
+            <!-- Login Tab -->
+            <div id="loginTab">
+                <div class="form-group">
+                    <label>📧 Email</label>
+                    <input type="email" id="loginEmail" placeholder="your.email@example.com">
+                </div>
+                
+                <div class="form-group">
+                    <label>🔒 Password</label>
+                    <input type="password" id="loginPassword" placeholder="Enter password">
+                </div>
+                
+                <button class="btn" onclick="login()">🚀 Login</button>
             </div>
             
-            <button class="btn" onclick="login()">🚀 Login</button>
+            <!-- Signup Tab -->
+            <div id="signupTab" style="display:none;">
+                <div class="form-group">
+                    <label>👤 Full Name</label>
+                    <input type="text" id="signupName" placeholder="John Doe">
+                </div>
+                
+                <div class="form-group">
+                    <label>📧 Email</label>
+                    <input type="email" id="signupEmail" placeholder="your.email@example.com">
+                </div>
+                
+                <div class="form-group">
+                    <label>🔒 Password</label>
+                    <input type="password" id="signupPassword" placeholder="Min 6 characters">
+                </div>
+                
+                <div class="form-group">
+                    <label>🔒 Confirm Password</label>
+                    <input type="password" id="signupConfirm" placeholder="Re-enter password">
+                </div>
+                
+                <button class="btn" onclick="signup()">✨ Create Account</button>
+            </div>
             
             <div id="loginMessage"></div>
             
-            <div style="text-align:center; margin-top:20px; color:#888;">
-                💡 Note: Use the desktop app to create an account
+            <div style="text-align:center; margin-top:20px; color:#888; font-size:13px;">
+                💡 Create account to track licenses & get updates<br>
+                Or use the desktop app for full features
             </div>
         </div>
     </div>
@@ -360,7 +395,7 @@
                 <a href="https://sainionhacks.github.io/phantom-ai-website/" class="action-btn">🏠 Visit Website</a>
                 <a href="https://sainionhacks.github.io/phantom-ai-website/#pricing" class="action-btn">💳 Purchase License</a>
                 <a href="mailto:nitinsaini077@gmail.com" class="action-btn">📧 Contact Support</a>
-                <a href="https://github.com/SainiONHacks/phantom-ai-licenses" class="action-btn">📚 Documentation</a>
+                <a href="https://github.com/SainiONHacks/phantom-ai-website" class="action-btn" target="_blank">📚 Documentation</a>
             </div>
         </div>
     </div>
@@ -388,6 +423,25 @@
             document.getElementById('loginSection').style.display = 'none';
             document.getElementById('dashboardSection').style.display = 'block';
             loadDashboardData();
+        }
+
+        // Tab switching functions
+        function showLoginTab() {
+            document.getElementById('loginTab').style.display = 'block';
+            document.getElementById('signupTab').style.display = 'none';
+            document.getElementById('tabLogin').style.opacity = '1';
+            document.getElementById('tabSignup').style.opacity = '0.5';
+            document.getElementById('loginMessage').textContent = '';
+            document.getElementById('loginMessage').className = '';
+        }
+
+        function showSignupTab() {
+            document.getElementById('loginTab').style.display = 'none';
+            document.getElementById('signupTab').style.display = 'block';
+            document.getElementById('tabLogin').style.opacity = '0.5';
+            document.getElementById('tabSignup').style.opacity = '1';
+            document.getElementById('loginMessage').textContent = '';
+            document.getElementById('loginMessage').className = '';
         }
 
         function login() {
@@ -420,6 +474,63 @@
                 localStorage.setItem('phantom_user', JSON.stringify(user));
                 currentUser = user;
                 showDashboard();
+            }, 1000);
+        }
+
+        function signup() {
+            const name = document.getElementById('signupName').value.trim();
+            const email = document.getElementById('signupEmail').value.trim();
+            const password = document.getElementById('signupPassword').value;
+            const confirm = document.getElementById('signupConfirm').value;
+            const messageDiv = document.getElementById('loginMessage');
+
+            // Validation
+            if (!name || !email || !password || !confirm) {
+                messageDiv.className = 'error';
+                messageDiv.textContent = '❌ Please fill all fields';
+                return;
+            }
+
+            if (!email.includes('@')) {
+                messageDiv.className = 'error';
+                messageDiv.textContent = '❌ Invalid email format';
+                return;
+            }
+
+            if (password.length < 6) {
+                messageDiv.className = 'error';
+                messageDiv.textContent = '❌ Password must be at least 6 characters';
+                return;
+            }
+
+            if (password !== confirm) {
+                messageDiv.className = 'error';
+                messageDiv.textContent = '❌ Passwords do not match';
+                return;
+            }
+
+            // Simulate signup
+            messageDiv.className = 'success';
+            messageDiv.textContent = '✅ Creating account...';
+
+            setTimeout(() => {
+                const user = {
+                    email: email,
+                    name: name,
+                    usage_stats: {
+                        total_sessions: 0,
+                        total_queries: 0
+                    },
+                    licenses: []
+                };
+
+                localStorage.setItem('phantom_user', JSON.stringify(user));
+                currentUser = user;
+                
+                messageDiv.textContent = '✅ Account created! Welcome!';
+                setTimeout(() => {
+                    showDashboard();
+                }, 1000);
             }, 1000);
         }
 
