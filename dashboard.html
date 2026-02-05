@@ -261,6 +261,85 @@
             color: #888;
             padding: 40px;
         }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #0f0f23, #1a1a2e);
+            border: 2px solid rgba(0, 255, 136, 0.3);
+            margin: 5% auto;
+            padding: 30px;
+            width: 90%;
+            max-width: 600px;
+            border-radius: 15px;
+            position: relative;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-close {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #888;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .modal-close:hover {
+            color: #ff6b6b;
+        }
+
+        .modal h2 {
+            color: #00ff88;
+            margin-bottom: 20px;
+        }
+
+        .form-group textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(0, 255, 136, 0.3);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 14px;
+            font-family: inherit;
+            resize: vertical;
+        }
+
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #00ff88;
+        }
+
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(0, 255, 136, 0.3);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 14px;
+        }
+
+        .form-group select:focus {
+            outline: none;
+            border-color: #00ff88;
+        }
     </style>
 </head>
 <body>
@@ -394,8 +473,7 @@
                 <h2>⚡ Quick Actions</h2>
                 <a href="https://sainionhacks.github.io/phantom-ai-website/" class="action-btn">🏠 Visit Website</a>
                 <a href="https://sainionhacks.github.io/phantom-ai-website/#pricing" class="action-btn">💳 Purchase License</a>
-                <a href="mailto:nitinsaini077@gmail.com" class="action-btn">📧 Contact Support</a>
-                <a href="https://github.com/SainiONHacks/phantom-ai-website" class="action-btn" target="_blank">📚 Documentation</a>
+                <a href="#" onclick="openFeedbackForm(); return false;" class="action-btn">📧 Contact Support</a>
             </div>
         </div>
     </div>
@@ -578,6 +656,108 @@
 
         // Check login on page load
         checkLogin();
+
+        // Feedback Form Functions
+        function openFeedbackForm() {
+            document.getElementById('feedbackModal').style.display = 'block';
+        }
+
+        function closeFeedbackForm() {
+            document.getElementById('feedbackModal').style.display = 'none';
+            document.getElementById('feedbackFormElement').reset();
+        }
+
+        function submitFeedbackForm(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const data = Object.fromEntries(formData);
+            
+            // Show loading
+            const submitBtn = event.target.querySelector('button[type="submit"]');
+            submitBtn.textContent = '⏳ Sending...';
+            submitBtn.disabled = true;
+
+            // Send via FormSubmit.co (free email service)
+            fetch('https://formsubmit.co/nitinsaini077@gmail.com', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    _subject: "PHANTOM AI - Contact/Feedback from " + data.name,
+                    _template: "box",
+                    _captcha: "false",
+                    Name: data.name,
+                    Email: data.email,
+                    Subject: data.subject,
+                    Message: data.message
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert('✅ Message sent successfully! We will get back to you soon.');
+                closeFeedbackForm();
+            })
+            .catch(error => {
+                alert('❌ Failed to send message. Please try again or email directly to nitinsaini077@gmail.com');
+            })
+            .finally(() => {
+                submitBtn.textContent = '📤 Send Message';
+                submitBtn.disabled = false;
+            });
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const feedbackModal = document.getElementById('feedbackModal');
+            if (event.target == feedbackModal) {
+                closeFeedbackForm();
+            }
+        }
     </script>
+
+    <!-- Feedback/Contact Modal -->
+    <div id="feedbackModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeFeedbackForm()">&times;</span>
+            <h2>📧 Contact Support / Send Feedback</h2>
+            <p style="color:#888; margin-bottom:20px;">Have questions, issues, or suggestions? Send us a message!</p>
+            
+            <form id="feedbackFormElement" onsubmit="submitFeedbackForm(event)">
+                <div class="form-group">
+                    <label>👤 Your Name</label>
+                    <input type="text" name="name" required placeholder="John Doe">
+                </div>
+                
+                <div class="form-group">
+                    <label>📧 Your Email</label>
+                    <input type="email" name="email" required placeholder="your.email@example.com">
+                </div>
+                
+                <div class="form-group">
+                    <label>📝 Subject</label>
+                    <select name="subject" required>
+                        <option value="">-- Select Subject --</option>
+                        <option value="General Inquiry">General Inquiry</option>
+                        <option value="Technical Support">Technical Support</option>
+                        <option value="License Issue">License Issue</option>
+                        <option value="Feature Request">Feature Request</option>
+                        <option value="Bug Report">Bug Report</option>
+                        <option value="Feedback">Feedback</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>💬 Message</label>
+                    <textarea name="message" required placeholder="Describe your question, issue, or feedback in detail..."></textarea>
+                </div>
+                
+                <button type="submit" class="btn">📤 Send Message</button>
+            </form>
+        </div>
+    </div>
+
 </body>
 </html>
