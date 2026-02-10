@@ -1,4 +1,4 @@
-name: 🔑 Approve License Request
+name: Approve License Request
 
 on:
   issues:
@@ -10,31 +10,31 @@ permissions:
 
 jobs:
   approve-license:
-    # Only run when "approve-license" label is added by authorized user
+    # Only run when "approve-license" label is added
     if: github.event.label.name == 'approve-license'
     runs-on: ubuntu-latest
     
     steps:
-      - name: 🔐 Check Authorization
+      - name: Check Authorization
         id: auth
         run: |
           # Only allow specific GitHub users (admins) to approve
-          AUTHORIZED_USERS="SainiONHacks,YourUsername,AdminUser2"
+          AUTHORIZED_USERS="SainiONHacks"
           ACTOR="${{ github.event.sender.login }}"
           
           if [[ ",$AUTHORIZED_USERS," == *",$ACTOR,"* ]]; then
             echo "authorized=true" >> $GITHUB_OUTPUT
-            echo "✅ User $ACTOR is authorized to approve licenses"
+            echo "User $ACTOR is authorized to approve licenses"
           else
             echo "authorized=false" >> $GITHUB_OUTPUT
-            echo "❌ User $ACTOR is NOT authorized"
+            echo "User $ACTOR is NOT authorized"
           fi
 
-      - name: ❌ Reject Unauthorized
+      - name: Reject Unauthorized
         if: steps.auth.outputs.authorized != 'true'
         run: |
           gh issue comment ${{ github.event.issue.number }} \
-            --body "❌ **UNAUTHORIZED**: Only admin users can approve licenses. Request denied." \
+            --body "**UNAUTHORIZED**: Only admin users can approve licenses. Request denied." \
             --repo ${{ github.repository }}
           
           gh issue label add ${{ github.event.issue.number }} "unauthorized" --repo ${{ github.repository }}
@@ -43,92 +43,98 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: 📥 Checkout Repository
+      - name: Checkout Repository
         if: steps.auth.outputs.authorized == 'true'
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: 📋 Parse License Request
+      - name: Parse License Request
         if: steps.auth.outputs.authorized == 'true'
         id: parse
         run: |
           ISSUE_BODY="${{ github.event.issue.body }}"
           
-          # Extract email
-          EMAIL=$(echo "$ISSUE_BODY" | grep -A1 "📧 Customer Email" | tail -1 | sed 's/[[:space:]]//g')
+          # Extract email (looking for email pattern)
+          EMAIL=$(echo "$ISSUE_BODY" | grep -i "email" | grep -oE '\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b' | head -1)
+          if [ -z "$EMAIL" ]; then
+            EMAIL="no-email@example.com"
+          fi
           echo "email=$EMAIL" >> $GITHUB_OUTPUT
           
-          # Extract plan
-          PLAN=$(echo "$ISSUE_BODY" | grep -A1 "📦 Plan" | tail -1 | sed 's/^[[:space:]]*//')
+          # Extract plan (look for plan name)
+          PLAN=$(echo "$ISSUE_BODY" | grep -i "plan" | sed 's/.*plan[^:]*:[[:space:]]*//' | head -1 | xargs)
+          if [ -z "$PLAN" ]; then
+            PLAN="Standard Plan"
+          fi
           echo "plan=$PLAN" >> $GITHUB_OUTPUT
           
           # Extract order ID
-          ORDER_ID=$(echo "$ISSUE_BODY" | grep -A1 "🔢 Order ID" | tail -1 | sed 's/[[:space:]]//g')
+          ORDER_ID=$(echo "$ISSUE_BODY" | grep -i "order" | grep -oE '[A-Z0-9]{6,}' | head -1)
+          if [ -z "$ORDER_ID" ]; then
+            ORDER_ID="MANUAL-$(date +%s)"
+          fi
           echo "order_id=$ORDER_ID" >> $GITHUB_OUTPUT
           
-          echo "📋 Parsed:"
+          echo "Parsed data:"
           echo "  Email: $EMAIL"
           echo "  Plan: $PLAN"
           echo "  Order ID: $ORDER_ID"
 
-      - name: 🔑 Generate License Key
+      - name: Generate License Key
         if: steps.auth.outputs.authorized == 'true'
         id: generate
         run: |
           # Generate random license key (format: XXXX-XXXX-XXXX-XXXX)
-          SEGMENT1=$(head /dev/urandom | tr -dc A-Z0-9 | head -c4)
-          SEGMENT2=$(head /dev/urandom | tr -dc A-Z0-9 | head -c4)
-          SEGMENT3=$(head /dev/urandom | tr -dc A-Z0-9 | head -c4)
-          SEGMENT4=$(head /dev/urandom | tr -dc A-Z0-9 | head -c4)
+          SEGMENT1=$(cat /dev/urandom | tr -dc 'A-Z0-9' | fold -w 4 | head -n 1)
+          SEGMENT2=$(cat /dev/urandom | tr -dc 'A-Z0-9' | fold -w 4 | head -n 1)
+          SEGMENT3=$(cat /dev/urandom | tr -dc 'A-Z0-9' | fold -w 4 | head -n 1)
+          SEGMENT4=$(cat /dev/urandom | tr -dc 'A-Z0-9' | fold -w 4 | head -n 1)
           LICENSE_KEY="$SEGMENT1-$SEGMENT2-$SEGMENT3-$SEGMENT4"
           
           echo "license_key=$LICENSE_KEY" >> $GITHUB_OUTPUT
-          echo "🔑 Generated: $LICENSE_KEY"
+          echo "Generated license: $LICENSE_KEY"
 
-      - name: 📅 Calculate Expiry & Tier
+      - name: Calculate Expiry and Tier
         if: steps.auth.outputs.authorized == 'true'
         id: calc
         run: |
           PLAN="${{ steps.parse.outputs.plan }}"
           
-          # Determine tier and days
-          if [[ "$PLAN" == *"1 Day"* ]]; then
+          # Determine tier and days based on plan
+          if [[ "$PLAN" == *"1 Day"* ]] || [[ "$PLAN" == *"Trial"* ]]; then
             DAYS=1
             TIER="TRIAL"
-          elif [[ "$PLAN" == *"3 Days"* ]]; then
+          elif [[ "$PLAN" == *"3 Day"* ]]; then
             DAYS=3
             TIER="STANDARD"
-          elif [[ "$PLAN" == *"1 Month"* ]] || [[ "$PLAN" == *"30 Days"* ]]; then
+          elif [[ "$PLAN" == *"1 Month"* ]] || [[ "$PLAN" == *"30 Day"* ]] || [[ "$PLAN" == *"Monthly"* ]]; then
             DAYS=30
             TIER="PRO"
-          elif [[ "$PLAN" == *"1 Year"* ]] || [[ "$PLAN" == *"365 Days"* ]]; then
+          elif [[ "$PLAN" == *"1 Year"* ]] || [[ "$PLAN" == *"365 Day"* ]] || [[ "$PLAN" == *"Yearly"* ]]; then
             DAYS=365
             TIER="ENTERPRISE"
           else
+            # Default to 7 days trial
             DAYS=7
             TIER="STANDARD"
           fi
           
           # Calculate expiry date
-          if [[ "$OSTYPE" == "darwin"* ]]; then
-            EXPIRES=$(date -v+${DAYS}d +%Y-%m-%d)
-          else
-            EXPIRES=$(date -d "+${DAYS} days" +%Y-%m-%d)
-          fi
+          EXPIRES=$(date -d "+${DAYS} days" +%Y-%m-%d)
           
           echo "tier=$TIER" >> $GITHUB_OUTPUT
           echo "expires=$EXPIRES" >> $GITHUB_OUTPUT
           echo "days=$DAYS" >> $GITHUB_OUTPUT
           
-          echo "📅 Tier: $TIER | Expires: $EXPIRES | Duration: $DAYS days"
+          echo "License details: Tier=$TIER | Expires=$EXPIRES | Duration=$DAYS days"
 
-      - name: 🗄️ Update licenses.json
+      - name: Update licenses.json
         if: steps.auth.outputs.authorized == 'true'
         run: |
           # Create licenses.json if it doesn't exist
           if [ ! -f licenses.json ]; then
-            echo '{"licenses":[],"metadata":{"last_updated":"","total_licenses":0}}' > licenses.json
+            echo '{"licenses":[],"metadata":{"last_updated":"","total_licenses":0,"repository":""}}' > licenses.json
           fi
           
           # Add new license using jq
@@ -138,6 +144,7 @@ jobs:
           EXPIRES="${{ steps.calc.outputs.expires }}"
           ORDER_ID="${{ steps.parse.outputs.order_id }}"
           CREATED=$(date -u +"%Y-%m-%d %H:%M:%S")
+          ISSUE_NUM="${{ github.event.issue.number }}"
           
           jq --arg key "$LICENSE_KEY" \
              --arg email "$EMAIL" \
@@ -145,6 +152,7 @@ jobs:
              --arg expires "$EXPIRES" \
              --arg created "$CREATED" \
              --arg order "$ORDER_ID" \
+             --arg issue "$ISSUE_NUM" \
              '.licenses += [{
                "key": $key,
                "email": $email,
@@ -153,52 +161,60 @@ jobs:
                "tier": $tier,
                "active": true,
                "created": $created,
-               "notes": ("GitHub Actions Approval - Issue #" + ($order | tostring))
+               "notes": ("GitHub Issue #" + $issue + " - Order " + $order)
              }] | 
              .metadata.last_updated = $created |
-             .metadata.total_licenses = (.licenses | length)' \
+             .metadata.total_licenses = (.licenses | length) |
+             .metadata.repository = "${{ github.repository }}"' \
              licenses.json > licenses_temp.json
           
           mv licenses_temp.json licenses.json
           
-          echo "✅ Added license to licenses.json"
+          echo "Added license to licenses.json"
+          cat licenses.json
 
-      - name: 📝 Commit Changes
+      - name: Commit Changes
         if: steps.auth.outputs.authorized == 'true'
         run: |
           git config user.name "GitHub Actions Bot"
           git config user.email "actions@github.com"
           git add licenses.json
-          git commit -m "✅ Add license: ${{ steps.generate.outputs.license_key }} for ${{ steps.parse.outputs.email }}"
+          git commit -m "Add license: ${{ steps.generate.outputs.license_key }} for ${{ steps.parse.outputs.email }}"
           git push
 
-      - name: ✅ Update Issue with Success
+      - name: Update Issue with Success
         if: steps.auth.outputs.authorized == 'true'
         run: |
+          TIMESTAMP=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
+          LICENSE_KEY="${{ steps.generate.outputs.license_key }}"
+          TIER="${{ steps.calc.outputs.tier }}"
+          EXPIRES="${{ steps.calc.outputs.expires }}"
+          DAYS="${{ steps.calc.outputs.days }}"
+          EMAIL="${{ steps.parse.outputs.email }}"
+          ACTOR="${{ github.event.sender.login }}"
+          
           gh issue comment ${{ github.event.issue.number }} \
-            --body "## ✅ License Approved!
-
-          ### 🔑 License Details
+            --body "## License Approved!
           
-          | Field | Value |
-          |-------|-------|
-          | **License Key** | \`${{ steps.generate.outputs.license_key }}\` |
-          | **Tier** | **${{ steps.calc.outputs.tier }}** |
-          | **Expires** | ${{ steps.calc.outputs.expires }} |
-          | **Duration** | ${{ steps.calc.outputs.days }} days |
-          | **Email** | ${{ steps.parse.outputs.email }} |
+          ### License Details
           
-          ### 📊 Status
-          - ✅ License generated
-          - ✅ Added to \`licenses.json\`
+          - **License Key:** \`${LICENSE_KEY}\`
+          - **Tier:** **${TIER}**
+          - **Expires:** ${EXPIRES}
+          - **Duration:** ${DAYS} days
+          - **Email:** ${EMAIL}
+          
+          ### Status
+          - ✅ License generated successfully
+          - ✅ Added to licenses.json
           - ✅ Pushed to repository
           - ✅ User can activate immediately
           
-          ### 📧 Next Steps
+          ### Next Steps
           Send this license key to the customer via email.
           
           ---
-          *Approved by @${{ github.event.sender.login }} on $(date -u +"%Y-%m-%d %H:%M:%S UTC")*" \
+          *Approved by @${ACTOR} on ${TIMESTAMP}*" \
             --repo ${{ github.repository }}
           
           # Add success label and close issue
@@ -208,23 +224,28 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: ❌ Handle Failure
+      - name: Handle Failure
         if: failure() && steps.auth.outputs.authorized == 'true'
         run: |
+          REPO="${{ github.repository }}"
+          RUN_ID="${{ github.run_id }}"
+          
           gh issue comment ${{ github.event.issue.number }} \
-            --body "❌ **License approval failed!**
-            
-            Please check the [workflow logs](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}) for details.
-            
-            Common issues:
-            - Invalid email format
-            - Duplicate license
-            - Repository write permission denied
-            
-            Please retry or contact system administrator." \
+            --body "**License approval failed!**
+          
+          Please check the workflow logs for details:
+          https://github.com/${REPO}/actions/runs/${RUN_ID}
+          
+          Common issues:
+          - Invalid email format
+          - Duplicate license
+          - Repository write permission denied
+          
+          Please retry or contact system administrator." \
             --repo ${{ github.repository }}
           
           gh issue label add ${{ github.event.issue.number }} "failed" --repo ${{ github.repository }}
           gh issue label remove ${{ github.event.issue.number }} "approve-license" --repo ${{ github.repository }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
