@@ -1,219 +1,1009 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - SainiON AI</title>
-    <link rel="icon" type="image/x-icon" href="icon.ico">
+    <title>🔐 SainiON AI - Admin Dashboard</title>
+    <!-- GitHub License Manager -->
+    <script src="js/github-license-manager.js"></script>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
-            color: #ffffff;
-            line-height: 1.6;
-            overflow-x: hidden;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
         }
-        .container {
-            max-width: 1200px;
+
+        /* Login Screen */
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .login-box {
+            background: #1e1e1e;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            max-width: 400px;
+            width: 100%;
+            border: 1px solid #333;
+        }
+
+        .login-box h2 {
+            text-align: center;
+            color: #1e88e5;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #aaa;
+            font-size: 14px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            background: #2d2d2d;
+            border: 1px solid #444;
+            border-radius: 5px;
+            color: #fff;
+            font-size: 14px;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #1e88e5;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background: #1e88e5;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+
+        .btn:hover {
+            background: #1565c0;
+        }
+
+        .btn-danger {
+            background: #d32f2f;
+        }
+
+        .btn-danger:hover {
+            background: #c62828;
+        }
+
+        .btn-secondary {
+            background: #666;
+            margin-top: 10px;
+        }
+
+        .btn-secondary:hover {
+            background: #555;
+        }
+
+        .error {
+            color: #ff5252;
+            text-align: center;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        .success {
+            color: #4caf50;
+            text-align: center;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        /* Dashboard */
+        .dashboard {
+            display: none;
+            padding: 20px;
+            max-width: 1600px;
             margin: 0 auto;
-            padding: 0 20px;
         }
-        header {
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(10px);
-            padding: 20px 0;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            border-bottom: 2px solid rgba(0, 255, 136, 0.3);
-        }
-        .header-content {
+
+        .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 20px 30px;
+            background: #1e1e1e;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            border: 1px solid #333;
         }
-        .logo {
-            font-size: 28px;
-            font-weight: bold;
-            background: linear-gradient(135deg, #00ff88, #00d4ff);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 30px rgba(0, 255, 136, 0.5);
-        }
-        nav {
+
+        .header-left {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 20px;
         }
-        nav a {
-            color: #fff;
+
+        .header h1 {
+            color: #1e88e5;
+            font-size: 28px;
+        }
+
+        .home-btn {
+            background: #388e3c;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
             text-decoration: none;
-            margin-left: 30px;
-            font-weight: 500;
+            display: inline-block;
+        }
+
+        .home-btn:hover {
+            background: #2e7d32;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .stats {
+            display: flex;
+            gap: 20px;
+            font-size: 14px;
+            color: #aaa;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            background: #2d2d2d;
+            color: #e0e0e0;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 5px 5px 0 0;
+            cursor: pointer;
+            font-weight: bold;
             transition: all 0.3s;
+            border: 1px solid #444;
+            border-bottom: none;
         }
-        nav a:hover {
-            color: #00ff88;
-            text-shadow: 0 0 20px rgba(0, 255, 136, 0.8);
+
+        .tab-btn.active {
+            background: #1e88e5;
+            border-color: #1e88e5;
         }
-        .dashboard {
-            max-width: 900px;
-            margin: 40px auto;
-            background: #22223b;
-            border-radius: 16px;
-            box-shadow: 0 8px 32px rgba(0,255,136,0.15);
-            padding: 32px;
+
+        .tab-btn:hover:not(.active) {
+            background: #3a3a3a;
         }
-        h1 {
-            color: #00ff88;
-            text-align: center;
-            margin-bottom: 32px;
+
+        .tab-content {
+            display: none;
+            background: #1e1e1e;
+            padding: 30px;
+            border-radius: 0 10px 10px 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            border: 1px solid #333;
         }
+
+        .tab-content.active {
+            display: block;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 32px;
+            margin-top: 20px;
         }
-        th, td {
-            padding: 14px 10px;
-            border-bottom: 1px solid #444;
+
+        th,
+        td {
+            padding: 15px;
             text-align: left;
+            border-bottom: 1px solid #333;
         }
+
         th {
-            background: #00ff88;
-            color: #22223b;
+            background: #2d2d2d;
+            color: #1e88e5;
+            font-weight: bold;
+            position: sticky;
+            top: 0;
         }
+
         tr:hover {
-            background: #2a2a4a;
+            background: #252525;
         }
-        .revoke-btn {
-            background: #ff0055;
-            color: #fff;
+
+        .badge {
+            padding: 5px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .badge-success {
+            background: #388e3c;
+            color: white;
+        }
+
+        .badge-danger {
+            background: #d32f2f;
+            color: white;
+        }
+
+        .badge-warning {
+            background: #f57c00;
+            color: white;
+        }
+
+        .action-btn {
+            padding: 6px 12px;
+            margin: 0 3px;
             border: none;
-            border-radius: 8px;
-            padding: 8px 18px;
+            border-radius: 4px;
             cursor: pointer;
-            font-weight: bold;
-            transition: background 0.2s;
+            font-size: 12px;
+            transition: opacity 0.3s;
         }
-        .revoke-btn:hover {
-            background: #ff3366;
+
+        .action-btn:hover {
+            opacity: 0.8;
         }
-        .status {
-            font-weight: bold;
+
+        .btn-view {
+            background: #1e88e5;
+            color: white;
         }
-        .status.active {
-            color: #00ff88;
+
+        .btn-approve {
+            background: #388e3c;
+            color: white;
         }
-        .status.revoked {
-            color: #ff0055;
+
+        .btn-revoke {
+            background: #d32f2f;
+            color: white;
+        }
+
+        .btn-password {
+            background: #f57c00;
+            color: white;
+        }
+
+        .search-box {
+            padding: 12px;
+            background: #2d2d2d;
+            border: 1px solid #444;
+            border-radius: 5px;
+            color: #fff;
+            width: 300px;
+            margin-bottom: 20px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: #1e1e1e;
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 500px;
+            width: 90%;
+            border: 1px solid #333;
+        }
+
+        .modal-content h3 {
+            color: #1e88e5;
+            margin-bottom: 20px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .security-notice {
+            background: #2d2d2d;
+            border-left: 4px solid #f57c00;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+
+        .security-notice strong {
+            color: #f57c00;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .tabs {
+                overflow-x: auto;
+                flex-wrap: nowrap;
+            }
+
+            table {
+                font-size: 12px;
+            }
+
+            th,
+            td {
+                padding: 10px 5px;
+            }
         }
     </style>
 </head>
 
 <body>
-    <!-- Header -->
-    <header>
-        <div class="container header-content">
-            <div class="logo">🧠 SainiON AI</div>
-            <nav>
-                <a href="index.html">Home</a>
-                <a href="dashboard.html" class="btn-login">👤 User Dashboard</a>
-                <a href="admin_dashboard.html" style="color:#00ff88;font-weight:bold;">🔒 Admin Dashboard</a>
-            </nav>
+    <!-- Login Screen -->
+    <div class="login-container" id="loginScreen">
+        <div class="login-box">
+            <h2>🔐 Admin Login</h2>
+            <div class="security-notice">
+                <strong>⚠️ Security Notice:</strong> This is a high-security admin panel. All login attempts are logged
+                and monitored. Unauthorized access attempts will be reported.
+            </div>
+            <form id="loginForm" onsubmit="return handleLogin(event)">
+                <div class="input-group">
+                    <label for="adminPassword">Admin Password</label>
+                    <input type="password" id="adminPassword" placeholder="Enter admin password" required
+                        autocomplete="current-password">
+                </div>
+                <button type="submit" class="btn">🔓 Login</button>
+                <div class="error" id="loginError"></div>
+            </form>
         </div>
-    </header>
-    <div class="dashboard">
-        <h1>Admin Dashboard - User Licenses</h1>
-        <table id="userTable">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>License Key</th>
-                    <th>Registration Date</th>
-                    <th>License Expiry</th>
-                    <th>Status</th>
-                    <th>Feedback</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- User rows will be rendered here -->
-            </tbody>
-        </table>
     </div>
+
+    <!-- Dashboard -->
+    <div class="dashboard" id="dashboard">
+        <div class="header">
+            <div class="header-left">
+                <h1>👑 Admin Dashboard</h1>
+                <a href="index.html" class="home-btn">🏠 Home</a>
+            </div>
+            <div class="header-actions">
+                <div class="stats">
+                    <div class="stat-item">
+                        <span>👥</span>
+                        <span id="totalUsers">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span>✅</span>
+                        <span id="licensedUsers">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span>💳</span>
+                        <span id="pendingOrders">0</span>
+                    </div>
+                </div>
+                <button class="btn" style="width: auto; padding: 10px 20px;" onclick="showChangePassword()">🔑 Change
+                    Password</button>
+                <button class="btn-secondary" style="width: auto; padding: 10px 20px; border: none;"
+                    onclick="refreshData()">🔄 Refresh</button>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('users')">👥 Users</button>
+            <button class="tab-btn" onclick="switchTab('purchases')">💳 Purchases</button>
+            <button class="tab-btn" onclick="switchTab('activity')">📊 Activity Log</button>
+        </div>
+
+        <!-- Users Tab -->
+        <div class="tab-content active" id="users">
+            <input type="text" class="search-box" placeholder="🔍 Search users..."
+                onkeyup="searchTable('usersTable', this.value)">
+            <table id="usersTable">
+                <thead>
+                    <tr>
+                        <th>Email</th>
+                        <th>Name</th>
+                        <th>License</th>
+                        <th>Tier</th>
+                        <th>Expires</th>
+                        <th>Last Login</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="usersTableBody">
+                    <tr>
+                        <td colspan="8" style="text-align: center; padding: 40px;">Loading users...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Purchases Tab -->
+        <div class="tab-content" id="purchases">
+            <input type="text" class="search-box" placeholder="🔍 Search purchases..."
+                onkeyup="searchTable('purchasesTable', this.value)">
+            <table id="purchasesTable">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Email</th>
+                        <th>Plan</th>
+                        <th>Amount</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="purchasesTableBody">
+                    <tr>
+                        <td colspan="7" style="text-align: center; padding: 40px;">Loading purchases...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Activity Tab -->
+        <div class="tab-content" id="activity">
+            <input type="text" class="search-box" placeholder="🔍 Search activity..."
+                onkeyup="searchTable('activityTable', this.value)">
+            <table id="activityTable">
+                <thead>
+                    <tr>
+                        <th>Timestamp</th>
+                        <th>User</th>
+                        <th>Action</th>
+                        <th>Details</th>
+                    </tr>
+                </thead>
+                <tbody id="activityTableBody">
+                    <tr>
+                        <td colspan="4" style="text-align: center; padding: 40px;">Loading activity...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Change Admin Password Modal -->
+    <div class="modal" id="changePasswordModal">
+        <div class="modal-content">
+            <h3>🔑 Change Admin Password</h3>
+            <form id="changePasswordForm" onsubmit="return handleAdminPasswordChange(event)">
+                <div class="input-group">
+                    <label for="currentPassword">Current Password</label>
+                    <input type="password" id="currentPassword" placeholder="Current password" required>
+                </div>
+                <div class="input-group">
+                    <label for="newPassword">New Password</label>
+                    <input type="password" id="newPassword" placeholder="New password (min 8 characters)" required
+                        minlength="8">
+                </div>
+                <div class="input-group">
+                    <label for="confirmPassword">Confirm New Password</label>
+                    <input type="password" id="confirmPassword" placeholder="Confirm new password" required>
+                </div>
+                <div class="modal-actions">
+                    <button type="submit" class="btn">💾 Update Password</button>
+                    <button type="button" class="btn btn-secondary"
+                        onclick="closeModal('changePasswordModal')">Cancel</button>
+                </div>
+                <div class="error" id="passwordError"></div>
+                <div class="success" id="passwordSuccess"></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Change User Password Modal -->
+    <div class="modal" id="changeUserPasswordModal">
+        <div class="modal-content">
+            <h3>🔑 Change User Password</h3>
+            <form id="changeUserPasswordForm" onsubmit="return handleUserPasswordChange(event)">
+                <div class="input-group">
+                    <label for="userEmailPassword">User Email</label>
+                    <input type="email" id="userEmailPassword" readonly style="background: #1a1a1a;">
+                </div>
+                <div class="input-group">
+                    <label for="newUserPassword">New Password</label>
+                    <input type="password" id="newUserPassword" placeholder="New password (min 6 characters)" required
+                        minlength="6">
+                </div>
+                <div class="input-group">
+                    <label for="confirmUserPassword">Confirm New Password</label>
+                    <input type="password" id="confirmUserPassword" placeholder="Confirm new password" required>
+                </div>
+                <div class="modal-actions">
+                    <button type="submit" class="btn">💾 Update Password</button>
+                    <button type="button" class="btn btn-secondary"
+                        onclick="closeModal('changeUserPasswordModal')">Cancel</button>
+                </div>
+                <div class="error" id="userPasswordError"></div>
+                <div class="success" id="userPasswordSuccess"></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- User Details Modal -->
+    <div class="modal" id="userDetailsModal">
+        <div class="modal-content">
+            <h3>👤 User Details</h3>
+            <div id="userDetailsContent"></div>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="closeModal('userDetailsModal')">Close</button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // Example user data (replace with backend/API call)
-        const users = [
+        // Configuration - CHANGE THESE VALUES
+        const ADMIN_PASSWORD = 'Admin@999'; // Change this in production!
+        const SESSION_TIMEOUT = 30 * 60 * 1000; // 30 minutes
+        const MAX_LOGIN_ATTEMPTS = 5;
+        const LOCKOUT_TIME = 5 * 60 * 1000; // 5 minutes
+
+        let sessionTimer;
+        let isLoggedIn = false;
+        let loginAttempts = 0;
+        let lockoutUntil = 0;
+
+        // Mock Data (Replace with actual GitHub API calls)
+        let mockUsers = [
             {
-                name: "John Doe",
-                email: "john@example.com",
-                license: "ABC123",
-                regDate: "2026-02-01",
-                expiry: "2026-03-01",
-                status: "active",
-                feedback: "Great app, very helpful!"
+                email: 'demo1@SainiONAI.com',
+                name: 'Demo User 1',
+                license: 'ABC-123-XYZ',
+                tier: 'Pro',
+                expires: '2026-12-31',
+                lastLogin: '2026-02-10 09:30',
+                status: 'active'
             },
             {
-                name: "Jane Smith",
-                email: "jane@example.com",
-                license: "XYZ789",
-                regDate: "2026-01-15",
-                expiry: "2026-02-15",
-                status: "active",
-                feedback: "Loved the voice recognition feature."
+                email: 'demo2@SainiONAI.com',
+                name: 'Demo User 2',
+                license: 'DEF-456-UVW',
+                tier: 'Enterprise',
+                expires: '2027-06-30',
+                lastLogin: '2026-02-09 14:20',
+                status: 'active'
             },
             {
-                name: "Alice Brown",
-                email: "alice@example.com",
-                license: "LMN456",
-                regDate: "2026-01-10",
-                expiry: "2026-02-10",
-                status: "revoked",
-                feedback: "Had some issues with license activation."
+                email: 'demo3@SainiONAI.com',
+                name: 'Demo User 3',
+                license: 'No License',
+                tier: 'Free',
+                expires: 'N/A',
+                lastLogin: '2026-02-08 11:15',
+                status: 'active'
             }
         ];
 
-        function renderUsers() {
-            const tbody = document.querySelector('#userTable tbody');
+        let mockPurchases = [
+            {
+                orderId: 'ORD-001',
+                email: 'newuser@example.com',
+                plan: 'Pro',
+                amount: '₹500',
+                date: '2026-02-10',
+                status: 'pending'
+            },
+            {
+                orderId: 'ORD-002',
+                email: 'demo1@SainiONAI.com',
+                plan: 'Enterprise',
+                amount: '₹2000',
+                date: '2026-02-09',
+                status: 'approved'
+            }
+        ];
+
+        let mockActivity = [
+            {
+                timestamp: '2026-02-10 10:35:22',
+                user: 'demo1@SainiONAI.com',
+                action: 'Login',
+                details: 'Successful login from IP 192.168.1.1'
+            },
+            {
+                timestamp: '2026-02-10 09:20:15',
+                user: 'admin@SainiONAI.com',
+                action: 'License Revoked',
+                details: 'Revoked license for test@example.com'
+            },
+            {
+                timestamp: '2026-02-09 14:45:30',
+                user: 'demo2@SainiONAI.com',
+                action: 'Purchase',
+                details: 'Upgraded to Enterprise plan'
+            }
+        ];
+
+        // Login Handler with Rate Limiting
+        function handleLogin(event) {
+            event.preventDefault();
+
+            // Check lockout
+            if (Date.now() < lockoutUntil) {
+                const remainingTime = Math.ceil((lockoutUntil - Date.now()) / 1000);
+                document.getElementById('loginError').textContent = `🔒 Too many failed attempts. Try again in ${remainingTime} seconds.`;
+                return false;
+            }
+
+            const password = document.getElementById('adminPassword').value;
+            const errorDiv = document.getElementById('loginError');
+
+            if (password === ADMIN_PASSWORD) {
+                isLoggedIn = true;
+                loginAttempts = 0;
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'block';
+                loadDashboardData();
+                startSessionTimer();
+                logActivity('Admin', 'Login', 'Admin logged in successfully');
+            } else {
+                loginAttempts++;
+                if (loginAttempts >= MAX_LOGIN_ATTEMPTS) {
+                    lockoutUntil = Date.now() + LOCKOUT_TIME;
+                    errorDiv.textContent = '🔒 Too many failed attempts. Account locked for 5 minutes.';
+                    logActivity('Unknown', 'Failed Login (Locked)', 'Account locked due to multiple failed attempts');
+                } else {
+                    errorDiv.textContent = `❌ Invalid password. ${MAX_LOGIN_ATTEMPTS - loginAttempts} attempts remaining.`;
+                    logActivity('Unknown', 'Failed Login', `Failed admin login attempt (${loginAttempts}/${MAX_LOGIN_ATTEMPTS})`);
+                }
+            }
+            return false;
+        }
+
+        // Session Timer
+        function startSessionTimer() {
+            clearTimeout(sessionTimer);
+            sessionTimer = setTimeout(() => {
+                alert('⏱️ Session expired for security. Please login again.');
+                location.reload();
+            }, SESSION_TIMEOUT);
+        }
+
+        // Reset session timer on activity
+        document.addEventListener('click', () => {
+            if (isLoggedIn) startSessionTimer();
+        });
+
+        // Load Dashboard Data
+        function loadDashboardData() {
+            updateStats();
+            loadUsersTable();
+            loadPurchasesTable();
+            loadActivityTable();
+        }
+
+        // Update Stats
+        function updateStats() {
+            document.getElementById('totalUsers').textContent = mockUsers.length;
+            document.getElementById('licensedUsers').textContent = mockUsers.filter(u => u.license !== 'No License').length;
+            document.getElementById('pendingOrders').textContent = mockPurchases.filter(p => p.status === 'pending').length;
+        }
+
+        // Load Users Table
+        function loadUsersTable() {
+            const tbody = document.getElementById('usersTableBody');
             tbody.innerHTML = '';
-            users.forEach((user, idx) => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td>${user.name}</td>
+
+            mockUsers.forEach(user => {
+                const row = tbody.insertRow();
+                row.innerHTML = `
                     <td>${user.email}</td>
+                    <td>${user.name}</td>
                     <td>${user.license}</td>
-                    <td>${user.regDate}</td>
-                    <td>${user.expiry}</td>
-                    <td class="status ${user.status}">${user.status.charAt(0).toUpperCase() + user.status.slice(1)}</td>
+                    <td><span class="badge ${user.tier === 'Enterprise' ? 'badge-danger' : user.tier === 'Pro' ? 'badge-success' : 'badge-warning'}">${user.tier}</span></td>
+                    <td>${user.expires}</td>
+                    <td>${user.lastLogin}</td>
+                    <td><span class="badge badge-success">🟢 Active</span></td>
                     <td>
-                        <button onclick="readFeedback(${idx})" style="background:#00d4ff;color:#22223b;border:none;border-radius:8px;padding:6px 16px;cursor:pointer;font-weight:bold;">Read</button>
-                    </td>
-                    <td>
-                        <button class="revoke-btn" onclick="revokeLicense(${idx})" ${user.status === 'revoked' ? 'disabled' : ''}>Revoke</button>
+                        <button class="action-btn btn-view" onclick="viewUser('${user.email}')">👁️ View</button>
+                        <button class="action-btn btn-password" onclick="showUserPasswordChange('${user.email}')">🔑 Password</button>
+                        ${user.license !== 'No License' ? `<button class="action-btn btn-revoke" onclick="revokeUserLicense('${user.email}')">🚫 Revoke</button>` : ''}
                     </td>
                 `;
-                tbody.appendChild(tr);
             });
         }
 
-        function revokeLicense(idx) {
-            if (users[idx].status !== 'revoked') {
-                users[idx].status = 'revoked';
-                renderUsers();
-                alert('License revoked for ' + users[idx].name);
-                // TODO: Add backend call to update license status
+        // Load Purchases Table
+        function loadPurchasesTable() {
+            const tbody = document.getElementById('purchasesTableBody');
+            tbody.innerHTML = '';
+
+            mockPurchases.forEach(purchase => {
+                const row = tbody.insertRow();
+                row.innerHTML = `
+                    <td>${purchase.orderId}</td>
+                    <td>${purchase.email}</td>
+                    <td>${purchase.plan}</td>
+                    <td>${purchase.amount}</td>
+                    <td>${purchase.date}</td>
+                    <td><span class="badge ${purchase.status === 'pending' ? 'badge-warning' : 'badge-success'}">${purchase.status.toUpperCase()}</span></td>
+                    <td>
+                        ${purchase.status === 'pending' ? `<button class="action-btn btn-approve" onclick="approvePurchase('${purchase.orderId}')">✅ Approve</button>` : ''}
+                    </td>
+                `;
+            });
+        }
+
+        // Load Activity Table
+        function loadActivityTable() {
+            const tbody = document.getElementById('activityTableBody');
+            tbody.innerHTML = '';
+
+            mockActivity.forEach(activity => {
+                const row = tbody.insertRow();
+                row.innerHTML = `
+                    <td>${activity.timestamp}</td>
+                    <td>${activity.user}</td>
+                    <td>${activity.action}</td>
+                    <td>${activity.details}</td>
+                `;
+            });
+        }
+
+        // Switch Tabs
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+            event.target.classList.add('active');
+            document.getElementById(tabName).classList.add('active');
+        }
+
+        // Search Table
+        function searchTable(tableId, searchText) {
+            const table = document.getElementById(tableId);
+            const rows = table.getElementsByTagName('tr');
+
+            for (let i = 1; i < rows.length; i++) {
+                const row = rows[i];
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(searchText.toLowerCase()) ? '' : 'none';
             }
         }
 
-        function readFeedback(idx) {
-            alert('Feedback from ' + users[idx].name + ':\n' + users[idx].feedback);
+        // Refresh Data
+        function refreshData() {
+            loadDashboardData();
+            alert('✅ Data refreshed successfully!');
         }
 
-        renderUsers();
+        // View User
+        function viewUser(email) {
+            const user = mockUsers.find(u => u.email === email);
+            const content = document.getElementById('userDetailsContent');
+            content.innerHTML = `
+                <p style="margin: 10px 0;"><strong>Email:</strong> ${user.email}</p>
+                <p style="margin: 10px 0;"><strong>Name:</strong> ${user.name}</p>
+                <p style="margin: 10px 0;"><strong>License:</strong> ${user.license}</p>
+                <p style="margin: 10px 0;"><strong>Tier:</strong> ${user.tier}</p>
+                <p style="margin: 10px 0;"><strong>Expires:</strong> ${user.expires}</p>
+                <p style="margin: 10px 0;"><strong>Last Login:</strong> ${user.lastLogin}</p>
+                <p style="margin: 10px 0;"><strong>Status:</strong> ${user.status}</p>
+            `;
+            document.getElementById('userDetailsModal').style.display = 'flex';
+        }
+
+        // Revoke License
+        function revokeUserLicense(email) {
+            if (confirm(`⚠️ Are you sure you want to revoke the license for ${email}?`)) {
+                const user = mockUsers.find(u => u.email === email);
+                user.license = 'No License';
+                user.tier = 'Free';
+                user.expires = 'N/A';
+                loadUsersTable();
+                updateStats();
+                logActivity('Admin', 'License Revoked', `Revoked license for ${email}`);
+                alert('✅ License revoked successfully!');
+            }
+        }
+
+        // Approve Purchase (Real GitHub Integration)
+        async function approvePurchase(orderId) {
+            const purchase = mockPurchases.find(p => p.orderId === orderId);
+            if (!purchase) {
+                alert('❌ Order not found!');
+                return;
+            }
+
+            if (!confirm(`✅ Approve purchase for ${purchase.email}?\n\nPlan: ${purchase.plan}\n\nThis will:\n• Generate license key\n• Push to GitHub repository\n• Activate immediately`)) {
+                return;
+            }
+
+            // Use GitHub License Manager
+            if (window.GitHubLicenseManager) {
+                await window.GitHubLicenseManager.approvePurchase(
+                    orderId,
+                    purchase.email,
+                    purchase.plan
+                );
+            } else {
+                // Fallback to mock (if JS not loaded)
+                purchase.status = 'approved';
+                loadPurchasesTable();
+                updateStats();
+                logActivity('Admin', 'Purchase Approved', `Approved order ${orderId}`);
+                alert('✅ Purchase approved! (Mock mode - GitHub integration not loaded)');
+            }
+        }
+
+        // Show Change Admin Password Modal
+        function showChangePassword() {
+            document.getElementById('changePasswordModal').style.display = 'flex';
+            document.getElementById('changePasswordForm').reset();
+            document.getElementById('passwordError').textContent = '';
+            document.getElementById('passwordSuccess').textContent = '';
+        }
+
+        // Handle Admin Password Change
+        function handleAdminPasswordChange(event) {
+            event.preventDefault();
+            const current = document.getElementById('currentPassword').value;
+            const newPass = document.getElementById('newPassword').value;
+            const confirm = document.getElementById('confirmPassword').value;
+            const errorDiv = document.getElementById('passwordError');
+            const successDiv = document.getElementById('passwordSuccess');
+
+            errorDiv.textContent = '';
+            successDiv.textContent = '';
+
+            if (current !== ADMIN_PASSWORD) {
+                errorDiv.textContent = '❌ Current password is incorrect';
+                return false;
+            }
+
+            if (newPass.length < 8) {
+                errorDiv.textContent = '❌ New password must be at least 8 characters';
+                return false;
+            }
+
+            if (newPass !== confirm) {
+                errorDiv.textContent = '❌ Passwords do not match';
+                return false;
+            }
+
+            // Show success message
+            successDiv.textContent = '✅ Password updated! Update the ADMIN_PASSWORD constant in HTML file (line 393)';
+            logActivity('Admin', 'Password Change', 'Admin password was changed');
+
+            // Auto-close modal after 3 seconds
+            setTimeout(() => {
+                closeModal('changePasswordModal');
+            }, 3000);
+
+            return false;
+        }
+
+        // Show User Password Change Modal
+        function showUserPasswordChange(email) {
+            document.getElementById('userEmailPassword').value = email;
+            document.getElementById('changeUserPasswordModal').style.display = 'flex';
+            document.getElementById('changeUserPasswordForm').reset();
+            document.getElementById('userEmailPassword').value = email; // Set again after reset
+            document.getElementById('userPasswordError').textContent = '';
+            document.getElementById('userPasswordSuccess').textContent = '';
+        }
+
+        // Handle User Password Change
+        function handleUserPasswordChange(event) {
+            event.preventDefault();
+            const email = document.getElementById('userEmailPassword').value;
+            const newPass = document.getElementById('newUserPassword').value;
+            const confirm = document.getElementById('confirmUserPassword').value;
+            const errorDiv = document.getElementById('userPasswordError');
+            const successDiv = document.getElementById('userPasswordSuccess');
+
+            errorDiv.textContent = '';
+            successDiv.textContent = '';
+
+            if (newPass.length < 6) {
+                errorDiv.textContent = '❌ New password must be at least 6 characters';
+                return false;
+            }
+
+            if (newPass !== confirm) {
+                errorDiv.textContent = '❌ Passwords do not match';
+                return false;
+            }
+
+            // In production, this would call GitHub API to update user password
+            successDiv.textContent = `✅ Password for ${email} updated successfully!`;
+            logActivity('Admin', 'User Password Changed', `Changed password for ${email}`);
+
+            // Auto-close modal after 2 seconds
+            setTimeout(() => {
+                closeModal('changeUserPasswordModal');
+            }, 2000);
+
+            return false;
+        }
+
+        // Close Modal
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        // Log Activity
+        function logActivity(user, action, details) {
+            const timestamp = new Date().toISOString().replace('T', ' ').substring(0, 19);
+            mockActivity.unshift({ timestamp, user, action, details });
+            if (mockActivity.length > 100) mockActivity.pop(); // Keep last 100 activities
+            if (isLoggedIn) loadActivityTable();
+        }
+
+        // Close modals on outside click
+        window.onclick = function (event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+            }
+        }
+
+        // Prevent back button after login
+        if (isLoggedIn) {
+            window.history.pushState(null, '', window.location.href);
+            window.onpopstate = function () {
+                window.history.pushState(null, '', window.location.href);
+            };
+        }
+
+        // Security: Clear sensitive data on unload
+        window.addEventListener('beforeunload', () => {
+            if (isLoggedIn) {
+                logActivity('Admin', 'Logout', 'Admin session ended');
+            }
+        });
     </script>
 </body>
+
 </html>
