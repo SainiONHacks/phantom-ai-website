@@ -1,0 +1,114 @@
+name: 🔒 License Request
+description: Request a new license approval (Admin use only)
+title: "[LICENSE] Request for: "
+labels: ["license-request", "pending"]
+assignees:
+  - SainiONHacks
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## 🔑 License Approval Request
+        
+        This form creates a license approval request. Only authorized admins can approve.
+        
+        ⚠️ **Security Notice:**
+        - All fields are logged for audit purposes
+        - Only repository admins can approve licenses
+        - Approval requires adding the `approve-license` label
+
+  - type: input
+    id: order_id
+    attributes:
+      label: 🔢 Order ID
+      description: Unique order identifier from purchase system
+      placeholder: "e.g., ORD-2024-001"
+    validations:
+      required: true
+
+  - type: input
+    id: email
+    attributes:
+      label: 📧 Customer Email
+      description: Email address for license activation
+      placeholder: customer@example.com
+    validations:
+      required: true
+
+  - type: dropdown
+    id: plan
+    attributes:
+      label: 📦 Plan
+      description: Select the purchased plan
+      options:
+        - "1 Day Trial - $0.99"
+        - "3 Days Standard - $2.99"
+        - "1 Month Pro - $9.99"
+        - "1 Year Enterprise - $99.99"
+        - "Custom Plan"
+    validations:
+      required: true
+
+  - type: input
+    id: payment_proof
+    attributes:
+      label: 💳 Payment Reference
+      description: Payment transaction ID or proof
+      placeholder: "TXN12345 or PayPal #ABC123"
+    validations:
+      required: false
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: 📝 Additional Notes
+      description: Any special instructions or notes
+      placeholder: |
+        - Customer Name: John Doe
+        - Special Requirements: Hardware locked to specific device
+        - Notes: VIP customer, priority support
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: verification
+    attributes:
+      label: ✅ Verification Checklist
+      description: Confirm before submitting
+      options:
+        - label: Payment has been verified and received
+          required: true
+        - label: Customer email is valid and verified
+          required: true
+        - label: Plan selection matches payment amount
+          required: true
+        - label: No duplicate orders for this email
+          required: true
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+        
+        ### 🔐 Admin Approval Process
+        
+        1. **Submit this form** - Creates a license request issue
+        2. **Admin reviews** - Verifies payment and details
+        3. **Admin approves** - Adds `approve-license` label to issue
+        4. **Automated workflow** - Generates license and updates repository
+        5. **Issue closed** - License key posted in issue comments
+        
+        ### 🛡️ Security Features
+        
+        - ✅ Role-Based Access Control (only admins can approve)
+        - ✅ Audit trail (all actions logged in issue history)
+        - ✅ No direct repository access required
+        - ✅ GitHub Actions handles all operations
+        - ✅ No exposed API tokens in browser
+        
+        ### 📊 Expected Response Time
+        
+        - **During business hours:** < 30 minutes
+        - **After hours:** < 4 hours
+        - **Weekends:** < 24 hours
