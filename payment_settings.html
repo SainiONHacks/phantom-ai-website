@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Settings - SainiON AI Admin</title>
+    <link rel="icon" type="image/x-icon" href="icon.ico">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+            color: #ffffff;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            border: 2px solid rgba(0, 255, 136, 0.3);
+        }
+
+        .header h1 {
+            color: #00ff88;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #888;
+        }
+
+        .settings-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 30px;
+            border-radius: 15px;
+            border: 2px solid rgba(0, 255, 136, 0.2);
+            margin-bottom: 30px;
+        }
+
+        .settings-card h2 {
+            color: #00d4ff;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #00ff88;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(0, 255, 136, 0.3);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #00ff88;
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .form-group small {
+            display: block;
+            color: #888;
+            margin-top: 5px;
+            font-size: 12px;
+        }
+
+        .preview-box {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .preview-box img {
+            max-width: 250px;
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .preview-box p {
+            color: #000;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #00ff88, #00d4ff);
+            color: #000;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-block;
+            text-decoration: none;
+            margin-right: 10px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 255, 136, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 5px 20px rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ff6b6b, #ff5252);
+        }
+
+        .btn-danger:hover {
+            box-shadow: 0 5px 20px rgba(255, 107, 107, 0.4);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .status-message {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .status-message.success {
+            background: rgba(0, 255, 136, 0.2);
+            border: 2px solid #00ff88;
+            color: #00ff88;
+        }
+
+        .status-message.error {
+            background: rgba(255, 107, 107, 0.2);
+            border: 2px solid #ff6b6b;
+            color: #ff6b6b;
+        }
+
+        .info-box {
+            background: rgba(0, 212, 255, 0.1);
+            border: 2px solid rgba(0, 212, 255, 0.3);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .info-box h3 {
+            color: #00d4ff;
+            margin-bottom: 10px;
+        }
+
+        .info-box ul {
+            color: #888;
+            padding-left: 20px;
+        }
+
+        .info-box li {
+            margin-bottom: 5px;
+        }
+
+        .back-link {
+            color: #00d4ff;
+            text-decoration: none;
+            display: inline-block;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+        }
+
+        .back-link:hover {
+            color: #00ff88;
+            transform: translateX(-5px);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <a href="admin_dashboard.html" class="back-link">← Back to Admin Dashboard</a>
+
+        <div class="header">
+            <h1>💳 Payment Settings</h1>
+            <p>Configure payment QR code and collection details</p>
+        </div>
+
+        <div id="statusMessage" class="status-message"></div>
+
+        <!-- UPI Settings -->
+        <div class="settings-card">
+            <h2>🪙 UPI Payment Details</h2>
+            <form id="upiSettingsForm">
+                <div class="form-group">
+                    <label for="upiId">UPI ID *</label>
+                    <input type="text" id="upiId" placeholder="yourname@paytm" required>
+                    <small>Your UPI ID for receiving payments (e.g., yourname@paytm, yourname@oksbi)</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="upiName">Display Name *</label>
+                    <input type="text" id="upiName" placeholder="Your Business Name" required>
+                    <small>Name displayed in UPI payment apps</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="contactEmail">Support Email (shown to customers)</label>
+                    <input type="email" id="contactEmail" placeholder="support@yourdomain.com">
+                    <small>Email address customers can contact for support (optional, defaults to "Contact
+                        Support")</small>
+                </div>
+
+                <div class="button-group">
+                    <button type="submit" class="btn">💾 Save UPI Settings</button>
+                    <button type="button" class="btn btn-secondary" onclick="previewQRCode()">👁️ Preview QR
+                        Code</button>
+                    <button type="button" class="btn btn-secondary" onclick="loadDefaultSettings()">🔄 Load
+                        Defaults</button>
+                </div>
+            </form>
+
+            <div id="qrPreview" style="display:none;">
+                <h3 style="color:#00ff88; margin-top:30px;">QR Code Preview (₹999 example)</h3>
+                <div class="preview-box">
+                    <img id="qrImage" src="" alt="QR Code Preview">
+                    <p>Scan with any UPI app</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Custom QR Code Upload -->
+        <div class="settings-card">
+            <h2>🖼️ Custom QR Code (Advanced)</h2>
+            <p style="color:#888; margin-bottom:20px;">If you want to use a custom QR code image instead of
+                auto-generated UPI QR:</p>
+
+            <div class="form-group">
+                <label for="customQRUrl">Custom QR Code URL</label>
+                <input type="url" id="customQRUrl" placeholder="https://your-server.com/payment-qr.png">
+                <small>Leave empty to use auto-generated UPI QR code. If you provide a URL, this QR will be shown
+                    instead.</small>
+            </div>
+
+            <div class="button-group">
+                <button class="btn btn-secondary" onclick="saveCustomQR()">💾 Save Custom QR</button>
+                <button class="btn btn-danger" onclick="clearCustomQR()">🗑️ Remove Custom QR</button>
+            </div>
+
+            <div class="info-box">
+                <h3>ℹ️ When to use custom QR?</h3>
+                <ul>
+                    <li>You have a static payment QR code from your bank</li>
+                    <li>You want to use a payment gateway QR code</li>
+                    <li>You need to show multiple payment options in one image</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Email Configuration -->
+        <div class="settings-card">
+            <h2>📧 Email Notifications</h2>
+            <p style="color:#888; margin-bottom:20px;">Purchase requests are sent to this email (configured in HTML
+                files):</p>
+
+            <div
+                style="background:rgba(255,193,7,0.1); padding:15px; border-radius:8px; border:2px solid rgba(255,193,7,0.3);">
+                <p style="color:#ffc107;">⚠️ Current Email: <strong>nitinsaini077@gmail.com</strong></p>
+                <p style="color:#888; font-size:14px; margin-top:10px;">
+                    To change notification email, edit the fetch URL in:<br>
+                    • <code style="background:rgba(0,0,0,0.3); padding:2px 6px; border-radius:3px;">index.html</code>
+                    (line ~1338)<br>
+                    • <code
+                        style="background:rgba(0,0,0,0.3); padding:2px 6px; border-radius:3px;">dashboard.html</code>
+                    (line ~910)
+                </p>
+            </div>
+
+            <div class="info-box" style="margin-top:20px;">
+                <h3>ℹ️ How it works:</h3>
+                <ul>
+                    <li>When customer clicks "Buy Now", their details are sent to your email</li>
+                    <li>Email service: <strong>FormSubmit.co</strong> (free, no registration needed)</li>
+                    <li>After form submission, customer sees QR code for payment</li>
+                    <li>Customer pays and emails you the payment screenshot</li>
+                    <li>You verify payment and issue license key via admin dashboard</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Test Settings -->
+        <div class="settings-card">
+            <h2>🧪 Test Payment Flow</h2>
+            <p style="color:#888; margin-bottom:20px;">Test how customers will see the payment QR code:</p>
+
+            <div class="button-group">
+                <button class="btn" onclick="testPaymentModal()">🧪 Open Test Payment Modal</button>
+                <button class="btn btn-secondary" onclick="window.open('index.html#pricing', '_blank')">🌐 View Customer
+                    Page</button>
+            </div>
+        </div>
+
+        <!-- Current Settings Display -->
+        <div class="settings-card" style="background:rgba(0,0,0,0.3);">
+            <h2>⚙️ Current Settings</h2>
+            <pre id="currentSettings"
+                style="background:rgba(0,0,0,0.5); padding:15px; border-radius:8px; overflow-x:auto; color:#00ff88; font-size:12px;"></pre>
+        </div>
+    </div>
+
+    <script>
+        // Load current settings on page load
+        document.addEventListener('DOMContentLoaded', function () {
+            loadCurrentSettings();
+            displayCurrentSettings();
+        });
+
+        function loadCurrentSettings() {
+            const settings = JSON.parse(localStorage.getItem('paymentSettings') || '{}');
+            document.getElementById('upiId').value = settings.upiId || '';
+            document.getElementById('upiName').value = settings.upiName || '';
+            document.getElementById('contactEmail').value = settings.contactEmail || '';
+            document.getElementById('customQRUrl').value = settings.customQRUrl || '';
+        }
+
+        function loadDefaultSettings() {
+            if (confirm('Load default demo settings? This will overwrite your current settings.')) {
+                document.getElementById('upiId').value = 'yourpayment@upi';
+                document.getElementById('upiName').value = 'SainiON AI';
+                document.getElementById('contactEmail').value = 'support@sainion-ai.com';
+                document.getElementById('customQRUrl').value = '';
+            }
+        }
+
+        // Save UPI settings
+        document.getElementById('upiSettingsForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const settings = {
+                upiId: document.getElementById('upiId').value,
+                upiName: document.getElementById('upiName').value,
+                contactEmail: document.getElementById('contactEmail').value,
+                customQRUrl: document.getElementById('customQRUrl').value || ''
+            };
+
+            // Generate QR URL if no custom QR
+            if (!settings.customQRUrl) {
+                settings.qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=upi://pay?pa=${settings.upiId}&pn=${encodeURIComponent(settings.upiName)}&cu=INR&tn=SainiON%20AI%20License`;
+            } else {
+                settings.qrUrl = settings.customQRUrl;
+            }
+
+            localStorage.setItem('paymentSettings', JSON.stringify(settings));
+
+            showStatus('success', '✅ Payment settings saved successfully!');
+            displayCurrentSettings();
+        });
+
+        function saveCustomQR() {
+            const customUrl = document.getElementById('customQRUrl').value;
+            if (!customUrl) {
+                showStatus('error', '❌ Please enter a custom QR code URL first');
+                return;
+            }
+
+            const settings = JSON.parse(localStorage.getItem('paymentSettings') || '{}');
+            settings.customQRUrl = customUrl;
+            settings.qrUrl = customUrl;
+            localStorage.setItem('paymentSettings', JSON.stringify(settings));
+
+            showStatus('success', '✅ Custom QR code saved!');
+            displayCurrentSettings();
+        }
+
+        function clearCustomQR() {
+            if (confirm('Remove custom QR code and use auto-generated UPI QR?')) {
+                const settings = JSON.parse(localStorage.getItem('paymentSettings') || '{}');
+                settings.customQRUrl = '';
+
+                // Regenerate QR URL
+                if (settings.upiId) {
+                    settings.qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=upi://pay?pa=${settings.upiId}&pn=${encodeURIComponent(settings.upiName || 'SainiON AI')}&cu=INR&tn=SainiON%20AI%20License`;
+                }
+
+                localStorage.setItem('paymentSettings', JSON.stringify(settings));
+                document.getElementById('customQRUrl').value = '';
+
+                showStatus('success', '✅ Custom QR removed. Using auto-generated UPI QR.');
+                displayCurrentSettings();
+            }
+        }
+
+        function previewQRCode() {
+            const upiId = document.getElementById('upiId').value;
+            const upiName = document.getElementById('upiName').value;
+            const customUrl = document.getElementById('customQRUrl').value;
+
+            if (!upiId && !customUrl) {
+                alert('❌ Please enter UPI ID or Custom QR URL first');
+                return;
+            }
+
+            let qrUrl;
+            if (customUrl) {
+                qrUrl = customUrl;
+            } else {
+                qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=upi://pay?pa=${upiId}&pn=${encodeURIComponent(upiName)}&am=999&cu=INR&tn=SainiON%20AI%20License`;
+            }
+
+            document.getElementById('qrImage').src = qrUrl;
+            document.getElementById('qrPreview').style.display = 'block';
+
+            // Scroll to preview
+            document.getElementById('qrPreview').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function testPaymentModal() {
+            // Create test modal matching customer view
+            const modal = document.createElement('div');
+            modal.style.cssText = 'position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.8); display:flex; align-items:center; justify-content:center; z-index:9999;';
+
+            const settings = JSON.parse(localStorage.getItem('paymentSettings') || '{}');
+            const upiId = settings.upiId || 'yourpayment@upi';
+            const upiName = settings.upiName || 'SainiON AI';
+            const qrUrl = settings.qrUrl || `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=upi://pay?pa=${upiId}&pn=${encodeURIComponent(upiName)}&am=999&cu=INR&tn=Test%20Payment`;
+
+            modal.innerHTML = `
+                <div style="background:#1a1a2e; padding:30px; border-radius:15px; max-width:600px; width:90%; max-height:90vh; overflow-y:auto;">
+                    <h2 style="color:#00ff88; text-align:center; margin-bottom:20px;">💳 Test Payment View</h2>
+                    
+                    <div style="background:white; padding:20px; border-radius:10px; margin:20px 0; text-align:center;">
+                        <img src="${qrUrl}" style="max-width:250px; width:100%; height:auto;">
+                        <p style="color:#000; margin-top:10px; font-weight:bold;">Scan with any UPI app</p>
+                    </div>
+                    
+                    <div style="background:rgba(0,255,136,0.1); padding:20px; border-radius:10px; margin-bottom:20px;">
+                        <p style="color:#fff;"><strong>Order Details:</strong></p>
+                        <p style="color:#ccc;">👤 Name: Test Customer</p>
+                        <p style="color:#ccc;">📧 Email: test@example.com</p>
+                        <p style="color:#ccc;">📦 Plan: 30-Day Pro Plan</p>
+                        <p style="color:#ccc;">💰 Amount: ₹999</p>
+                    </div>
+                    
+                    <div style="background:rgba(255,193,7,0.1); padding:15px; border-radius:10px; border:2px solid rgba(255,193,7,0.3); margin-bottom:20px;">
+                        <p style="color:#ffc107; font-weight:bold;">⏳ After Payment:</p>
+                        <p style="color:#ccc; font-size:14px; margin-top:10px;">
+                            1. Take a screenshot of payment confirmation<br>
+                            2. Email proof to admin<br>
+                            3. You'll receive your license key within 2-4 hours
+                        </p>
+                    </div>
+                    
+                    <p style="color:#888; font-size:12px; text-align:center; margin-bottom:15px;">
+                        UPI ID: <code style="background:rgba(0,255,136,0.2); padding:3px 8px; border-radius:3px;">${upiId}</code>
+                    </p>
+                    
+                    <button onclick="this.parentElement.parentElement.remove()" style="width:100%; padding:15px; background:linear-gradient(135deg, #00ff88, #00d4ff); color:#000; border:none; border-radius:8px; font-weight:bold; cursor:pointer; font-size:16px;">
+                        ✅ Close Test Modal
+                    </button>
+                </div>
+            `;
+
+            document.body.appendChild(modal);
+            modal.onclick = (e) => { if (e.target === modal) modal.remove(); };
+        }
+
+        function displayCurrentSettings() {
+            const settings = JSON.parse(localStorage.getItem('paymentSettings') || '{}');
+            document.getElementById('currentSettings').textContent = JSON.stringify(settings, null, 2);
+        }
+
+        function showStatus(type, message) {
+            const statusEl = document.getElementById('statusMessage');
+            statusEl.className = `status-message ${type}`;
+            statusEl.textContent = message;
+            statusEl.style.display = 'block';
+
+            setTimeout(() => {
+                statusEl.style.display = 'none';
+            }, 5000);
+        }
+    </script>
+</body>
+
+</html>

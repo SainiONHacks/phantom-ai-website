@@ -625,16 +625,13 @@
                         <h3 style="color: #00ff88; text-align: center; margin-bottom: 15px;">Professional Installer</h3>
                         <p style="color: #b0b0b0; text-align: center; margin-bottom: 20px;">Complete package with app,
                             tutorial video, and documentation</p>
-                        <div style="text-align: center; font-size: 24px; color: #00d4ff; margin-bottom: 15px;">
-                            <strong>704 MB</strong>
-                        </div>
-                        <a href="https://github.com/SainiONHacks/sainion-ai-website/releases/download/v2.1/SainiON_AI_v2.1_Setup.exe"
+                        <a href="https://github.com/SainiONHacks/sainion-ai-website/releases" target="_blank"
                             style="display: block; text-align: center; padding: 15px; background: linear-gradient(135deg, #00ff88, #00d4ff); color: #000; text-decoration: none; border-radius: 10px; font-weight: bold; transition: all 0.3s;">
                             ⬇️ Download Installer
                         </a>
                         <div style="margin-top: 15px; font-size: 12px; color: #888; text-align: center;">
                             ✅ Installs to: C:\Program Files\SainiON AI<br>
-                            ✅ Includes: 335 MB Tutorial Video<br>
+                            ✅ Includes Tutorial Video<br>
                             ✅ Easy uninstall included
                         </div>
                     </div>
@@ -688,7 +685,8 @@
                     style="margin-top: 30px; background: rgba(0, 255, 136, 0.05); padding: 25px; border-radius: 15px; border: 2px solid rgba(0, 255, 136, 0.2);">
                     <h3 style="color: #00ff88; margin-bottom: 20px; text-align: center;">📥 Installation Steps</h3>
                     <ol style="color: #b0b0b0; line-height: 2.5; padding-left: 25px;">
-                        <li>Download <strong style="color: #00ff88;">SainiON_AI_v2.1_Setup.exe</strong> (704 MB)</li>
+                        <li>Download <strong style="color: #00ff88;">SainiON_AI_v2.1_Setup.exe</strong> from releases
+                        </li>
                         <li>Run the installer - professional wizard will guide you</li>
                         <li>Choose installation location (default: <strong>C:\Program Files\SainiON AI</strong>)</li>
                         <li>Select optional desktop shortcut</li>
@@ -907,7 +905,7 @@
             submitBtn.disabled = true;
 
             // Send via FormSubmit.co (free email service)
-            fetch('https://formsubmit.co/nitinsaini077@gmail.com', {
+            fetch('https://formsubmit.co/ajax/nitinsaini077@gmail.com', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -929,7 +927,7 @@
                     closeFeedbackForm();
                 })
                 .catch(error => {
-                    alert('❌ Failed to send message. Please try again or email directly to nitinsaini077@gmail.com');
+                    alert('❌ Failed to send message. Please try again or contact support.');
                 })
                 .finally(() => {
                     submitBtn.textContent = '📤 Send Message';
