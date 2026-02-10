@@ -1122,13 +1122,14 @@
             <h2>⬇️ Download SainiON AI</h2>
             <p>Professional installer with everything included - ready to use in minutes!</p>
             <div class="download-buttons">
-                <a href="https://github.com/SainiONHacks/sainion-ai-website/releases/download/v2.1/SainiON_AI_v2.1_Setup.exe"
-                    class="download-button">
+                <a href="https://github.com/SainiONHacks/sainion-ai-website/releases"
+                    target="_blank" class="download-button">
                     <span>🪟</span>
                     <span>Download for Windows (Professional Installer)</span>
                     <small style="display:block; margin-top:5px; font-size:14px;">Version 2.1 • 704 MB • Includes
                         Tutorial Video</small>
                 </a>
+                <p style="margin-top:15px; color:#888; font-size:14px;">📦 Click to visit GitHub Releases page for latest version</p>
             </div>
 
             <div style="margin-top: 40px; max-width: 800px; margin-left: auto; margin-right: auto; text-align: left;">
@@ -1232,7 +1233,7 @@
             <p>Join hundreds of professionals using SainiON AI for interviews, research, and productivity.</p>
             <a href="#pricing" class="cta-button">Start Your Trial - ₹100 Only!</a>
             <p style="margin-top: 30px; font-size: 16px;">
-                🎁 <strong>FREE 1-DAY DEMO</strong> available! Try before you buy with demo key: <code
+                🎁 <strong>FREE 6-HOUR DEMO</strong> available! Try before you buy with demo key: <code
                     style="background: rgba(0,255,136,0.2); padding: 5px 15px; border-radius: 5px; color: #00ff88;">DEMO-DEMO-DEMO-DEMO-DEMO</code>
             </p>
         </div>
@@ -1326,20 +1327,83 @@
             event.preventDefault();
             const form = event.target;
             const formData = new FormData(form);
+            const customerName = document.getElementById('customerName').value;
+            const customerEmail = document.getElementById('customerEmail').value;
+            const selectedPlan = document.getElementById('selectedPlan').textContent;
+            const selectedPrice = document.getElementById('selectedPrice').textContent;
 
+            // Send email notification to admin
             fetch('https://formsubmit.co/nitinsaini077@gmail.com', {
                 method: 'POST',
                 body: formData
             }).then(response => {
                 if (response.ok) {
-                    alert('✅ Purchase request sent successfully! We will contact you shortly with payment details.');
                     closePurchaseForm();
+                    // Show QR code payment modal
+                    showPaymentQRCode(customerName, customerEmail, selectedPlan, selectedPrice);
                 } else {
                     alert('❌ Failed to send request. Please try again or contact us directly at nitinsaini077@gmail.com');
                 }
             }).catch(error => {
                 alert('❌ Network error. Please try again or contact us directly at nitinsaini077@gmail.com');
             });
+        }
+
+        function showPaymentQRCode(name, email, plan, price) {
+            const qrModal = document.createElement('div');
+            qrModal.id = 'qrPaymentModal';
+            qrModal.className = 'modal';
+            qrModal.style.display = 'flex';
+            qrModal.innerHTML = `
+                <div class="modal-content" style="max-width: 500px; text-align: center;">
+                    <span class="modal-close" onclick="closeQRModal()">&times;</span>
+                    <h2 style="color:#00ff88; margin-bottom:20px;">💳 Complete Your Payment</h2>
+                    
+                    <div style="background: white; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=upi://pay?pa=nitinsaini077@paytm&pn=Nitin%20Saini&am=${price.replace('₹','')}&cu=INR&tn=SainiON%20AI%20License" 
+                             alt="Payment QR Code" 
+                             style="width: 250px; height: 250px;">
+                        <p style="color:#000; margin-top:10px; font-weight:bold;">Scan with any UPI app</p>
+                    </div>
+                    
+                    <div style="text-align:left; background: rgba(0,255,136,0.1); padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                        <p><strong>Order Details:</strong></p>
+                        <p>👤 Name: ${name}</p>
+                        <p>📧 Email: ${email}</p>
+                        <p>📦 Plan: ${plan}</p>
+                        <p>💰 Amount: ${price}</p>
+                    </div>
+                    
+                    <div style="background: rgba(255,193,7,0.1); padding: 15px; border-radius: 10px; border: 2px solid rgba(255,193,7,0.3); margin-bottom: 20px;">
+                        <p style="color: #ffc107; font-weight: bold;">⏳ After Payment:</p>
+                        <p style="color: #ccc; font-size: 14px; margin-top: 10px;">
+                            1. Take a screenshot of payment confirmation<br>
+                            2. Email it to: <strong>nitinsaini077@gmail.com</strong><br>
+                            3. You'll receive your license key within 2-4 hours
+                        </p>
+                    </div>
+                    
+                    <p style="color:#888; font-size:12px; margin-bottom:15px;">
+                        UPI ID: <code style="background:rgba(0,255,136,0.2); padding:3px 8px; border-radius:3px;">nitinsaini077@paytm</code>
+                    </p>
+                    
+                    <button class="btn" onclick="closeQRModal()" style="width:100%;">
+                        ✅ I've Completed Payment
+                    </button>
+                    
+                    <p style="color:#888; font-size:12px; margin-top:15px;">
+                        Need help? Contact: nitinsaini077@gmail.com
+                    </p>
+                </div>
+            `;
+            document.body.appendChild(qrModal);
+        }
+
+        function closeQRModal() {
+            const qrModal = document.getElementById('qrPaymentModal');
+            if (qrModal) {
+                qrModal.remove();
+            }
         }
 
         // Close modal when clicking outside
@@ -1384,34 +1448,8 @@
 
         // Download Tool Function
         function downloadTool() {
-            // Create a beautiful custom alert dialog
-            const downloadInfo = `
-╔══════════════════════════════════════════════════════════╗
-║           📥 DOWNLOAD SAINION AI TOOL v2.1              ║
-╚══════════════════════════════════════════════════════════╝
-
-✅ Download Options:
-
-1️⃣  GitHub Releases (Recommended):
-    https://github.com/SainiONHacks/sainion-ai-website/releases
-
-2️⃣  Direct Contact:
-    📧 Email: nitinsaini077@gmail.com
-    💬 Request latest version link
-
-📦 Package Includes:
-   • Main Tool EXE (40MB)
-   • Admin Dashboard
-   • Setup Instructions
-   • Configuration Guide
-
-🔐 License Required:
-   Purchase a license from the Pricing section to activate.
-
-💡 Need Help?
-   Contact support: nitinsaini077@gmail.com
-            `;
-            alert(downloadInfo);
+            // Redirect directly to GitHub releases
+            window.open('https://github.com/SainiONHacks/sainion-ai-website/releases', '_blank');
         }
     </script>
 
