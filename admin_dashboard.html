@@ -19,6 +19,65 @@
             background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
             color: #e0e0e0;
             min-height: 100vh;
+            margin: 0;
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            background: rgba(0, 0, 0, 0.95);
+            padding: 15px 0;
+            border-bottom: 2px solid #333;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .navbar .logo {
+            font-size: 20px;
+            font-weight: bold;
+            color: #1e88e5;
+            text-decoration: none;
+        }
+
+        .navbar nav {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .navbar nav a {
+            color: #aaa;
+            text-decoration: none;
+            transition: color 0.3s;
+            font-size: 14px;
+        }
+
+        .navbar nav a:hover {
+            color: #1e88e5;
+        }
+
+        .btn-home {
+            background: #1e88e5;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .btn-home:hover {
+            background: #1565c0;
+            color: white;
         }
 
         /* Login Screen */
@@ -388,6 +447,17 @@
 </head>
 
 <body>
+    <!-- Navigation Bar -->
+    <div class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">🔐 SainiON AI - Admin Panel</a>
+            <nav>
+                <a href="index.html" class="btn-home">🏠 Back to Home</a>
+                <a href="dashboard.html">📊 User Dashboard</a>
+            </nav>
+        </div>
+    </div>
+
     <!-- Login Screen -->
     <div class="login-container" id="loginScreen">
         <div class="login-box">

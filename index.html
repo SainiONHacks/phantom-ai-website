@@ -123,6 +123,126 @@
             text-shadow: none;
         }
 
+        .btn-admin {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a6f);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-left: 15px;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+        }
+
+        .btn-admin:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 107, 107, 0.5);
+            color: white !important;
+            text-shadow: none;
+        }
+
+        .btn-download-nav {
+            background: linear-gradient(135deg, #00ff88, #00d4ff);
+            color: #000;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-left: 15px;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0, 255, 136, 0.3);
+        }
+
+        .btn-download-nav:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 255, 136, 0.5);
+            color: #000 !important;
+            text-shadow: none;
+        }
+
+        /* Admin Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            padding: 40px;
+            border-radius: 15px;
+            border: 2px solid rgba(0, 255, 136, 0.3);
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 10px 50px rgba(0, 255, 136, 0.3);
+        }
+
+        .modal-close {
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            color: #888;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .modal-close:hover {
+            color: #ff6b6b;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #00ff88;
+            font-weight: 600;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(0, 255, 136, 0.3);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 14px;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #00ff88;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #00ff88, #00d4ff);
+            color: #000;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 255, 136, 0.5);
+        }
+
         /* Hero Section */
         .hero {
             text-align: center;
@@ -777,9 +897,27 @@
                 <a href="#pricing">Pricing</a>
                 <a href="#download">Download</a>
                 <a href="dashboard.html" class="btn-login">👤 Dashboard</a>
+                <a href="#" class="btn-download-nav" onclick="event.preventDefault();downloadTool()">📥 Get Tool</a>
+                <a href="#" class="btn-admin" onclick="event.preventDefault();showAdminLogin()">🔐 Admin</a>
             </nav>
         </div>
     </header>
+
+    <!-- Admin Login Modal -->
+    <div id="adminModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeAdminModal()">&times;</span>
+            <h2 style="text-align:center; color:#00ff88;">🔐 Admin Access</h2>
+            <div class="form-group">
+                <label>Admin Password</label>
+                <input type="password" id="adminPassword" placeholder="Enter admin password"
+                    onkeypress="if(event.key==='Enter')checkAdminPassword()">
+            </div>
+            <button class="btn" onclick="checkAdminPassword()">Login</button>
+            <div id="adminError" style="color:#ff6b6b; text-align:center; margin-top:10px; display:none;">Invalid
+                password!</div>
+        </div>
+    </div>
 
     <!-- Hero Section -->
     <section class="hero">
@@ -1207,9 +1345,73 @@
         // Close modal when clicking outside
         window.onclick = function (event) {
             const modal = document.getElementById('purchaseModal');
+            const adminModal = document.getElementById('adminModal');
             if (event.target === modal) {
                 closePurchaseForm();
             }
+            if (event.target === adminModal) {
+                closeAdminModal();
+            }
+        }
+
+        // Admin Login Functions
+        const ADMIN_PASSWORD = "admin@123"; // Change this to your secure password
+
+        function showAdminLogin() {
+            document.getElementById('adminModal').style.display = 'flex';
+            document.getElementById('adminPassword').value = '';
+            document.getElementById('adminError').style.display = 'none';
+        }
+
+        function closeAdminModal() {
+            document.getElementById('adminModal').style.display = 'none';
+        }
+
+        function checkAdminPassword() {
+            const password = document.getElementById('adminPassword').value;
+            if (password === ADMIN_PASSWORD) {
+                // Correct password - redirect to admin dashboard
+                window.location.href = 'admin_dashboard.html';
+            } else {
+                // Wrong password - show error
+                document.getElementById('adminError').style.display = 'block';
+                document.getElementById('adminPassword').value = '';
+                setTimeout(() => {
+                    document.getElementById('adminError').style.display = 'none';
+                }, 3000);
+            }
+        }
+
+        // Download Tool Function
+        function downloadTool() {
+            // Create a beautiful custom alert dialog
+            const downloadInfo = `
+╔══════════════════════════════════════════════════════════╗
+║           📥 DOWNLOAD SAINION AI TOOL v2.1              ║
+╚══════════════════════════════════════════════════════════╝
+
+✅ Download Options:
+
+1️⃣  GitHub Releases (Recommended):
+    https://github.com/SainiONHacks/sainion-ai-website/releases
+
+2️⃣  Direct Contact:
+    📧 Email: nitinsaini077@gmail.com
+    💬 Request latest version link
+
+📦 Package Includes:
+   • Main Tool EXE (40MB)
+   • Admin Dashboard
+   • Setup Instructions
+   • Configuration Guide
+
+🔐 License Required:
+   Purchase a license from the Pricing section to activate.
+
+💡 Need Help?
+   Contact support: nitinsaini077@gmail.com
+            `;
+            alert(downloadInfo);
         }
     </script>
 
