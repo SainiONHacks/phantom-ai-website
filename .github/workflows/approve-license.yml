@@ -76,13 +76,133 @@ jobs:
           fi
           echo "order_id=$ORDER_ID" >> $GITHUB_OUTPUT
           
+          # Extract transaction ID
+          TRANSACTION_ID=$(echo "$ISSUE_BODY" | grep -i "transaction" | grep -oE '[A-Z0-9]{6,}' | head -1)
+          echo "transaction_id=$TRANSACTION_ID" >> $GITHUB_OUTPUT
+          
           echo "Parsed data:"
           echo "  Email: $EMAIL"
           echo "  Plan: $PLAN"
           echo "  Order ID: $ORDER_ID"
+          echo "  Transaction ID: $TRANSACTION_ID"
+
+      - name: Validate Email Address
+        if: steps.auth.outputs.authorized == 'true'
+        id: validate_email
+        run: |
+          EMAIL="${{ steps.parse.outputs.email }}"
+          
+          echo "Validating email: $EMAIL"
+          
+          # List of common dummy/test email patterns
+          DUMMY_PATTERNS=(
+            "test@"
+            "demo@"
+            "example@"
+            "dummy@"
+            "fake@"
+            "john@gmail"
+            "jane@gmail"
+            "user@gmail"
+            "admin@test"
+            "noreply@"
+            "@example.com"
+            "@test.com"
+            "@dummy.com"
+            "@fake.com"
+          )
+          
+          # Check if email matches dummy patterns
+          IS_DUMMY=false
+          for pattern in "${DUMMY_PATTERNS[@]}"; do
+            if [[ "$EMAIL" == *"$pattern"* ]]; then
+              IS_DUMMY=true
+              echo "⚠️ Email matches dummy pattern: $pattern"
+              break
+            fi
+          done
+          
+          # List of disposable/temporary email domains
+          DISPOSABLE_DOMAINS=(
+            "10minutemail.com"
+            "guerrillamail.com"
+            "mailinator.com"
+            "tempmail.com"
+            "throwawaymail.com"
+            "yopmail.com"
+            "maildrop.cc"
+            "temp-mail.org"
+          )
+          
+          # Check against disposable domains
+          EMAIL_DOMAIN=$(echo "$EMAIL" | cut -d'@' -f2)
+          for domain in "${DISPOSABLE_DOMAINS[@]}"; do
+            if [[ "$EMAIL_DOMAIN" == "$domain" ]]; then
+              IS_DUMMY=true
+              echo "⚠️ Email uses disposable domain: $domain"
+              break
+            fi
+          done
+          
+          # Check if email is missing or invalid
+          if [[ -z "$EMAIL" ]] || [[ "$EMAIL" == "no-email@example.com" ]]; then
+            IS_DUMMY=true
+            echo "⚠️ No valid email provided"
+          fi
+          
+          if [ "$IS_DUMMY" = true ]; then
+            echo "valid=false" >> $GITHUB_OUTPUT
+            echo "❌ VALIDATION FAILED: Email appears to be fake or temporary"
+            echo ""
+            echo "Valid email required. Examples of INVALID emails:"
+            echo "  - test@gmail.com, demo@example.com (test accounts)"
+            echo "  - john@gmail.com, user@gmail.com (generic names)"  
+            echo "  - *@mailinator.com, *@tempmail.com (disposable)"
+            echo ""
+            echo "Please provide your actual email address for license delivery."
+            exit 1
+          else
+            echo "valid=true" >> $GITHUB_OUTPUT
+            echo "✅ Email validation passed: $EMAIL"
+          fi
+
+      - name: Reject Invalid Email
+        if: steps.auth.outputs.authorized == 'true' && steps.validate_email.outputs.valid == 'false'
+        run: |
+          gh issue comment ${{ github.event.issue.number }} \
+            --body "## ❌ License Request Rejected - Invalid Email
+          
+          Your license request was rejected because the email address appears to be fake or temporary.
+          
+          **Email provided:** \`${{ steps.parse.outputs.email }}\`
+          
+          ### Why was this rejected?
+          - Test/demo email addresses (test@, demo@, example@)
+          - Generic names (john@gmail.com, user@gmail.com)
+          - Disposable/temporary email services
+          - Missing or invalid email format
+          
+          ### What to do:
+          1. Close this issue
+          2. Create a new license request
+          3. **Use your REAL email address** (where you want to receive the license)
+          4. Include valid payment proof (transaction ID, screenshot)
+          
+          ### Need help?
+          Contact support at: nitinsaini077@gmail.com
+          
+          ---
+          *Automated security check - Rejected on $(date -u +'%Y-%m-%d %H:%M:%S UTC')*" \
+            --repo ${{ github.repository }}
+          
+          gh issue label add ${{ github.event.issue.number }} "invalid-email" --repo ${{ github.repository }}
+          gh issue label remove ${{ github.event.issue.number }} "approve-license" --repo ${{ github.repository }}
+          gh issue close ${{ github.event.issue.number }} --reason "not_planned" --repo ${{ github.repository }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Generate License Key
-        if: steps.auth.outputs.authorized == 'true'
+        if: steps.auth.outputs.authorized == 'true' && steps.validate_email.outputs.valid == 'true'
         id: generate
         run: |
           # Generate random license key (format: XXXX-XXXX-XXXX-XXXX)
@@ -96,7 +216,7 @@ jobs:
           echo "Generated license: $LICENSE_KEY"
 
       - name: Calculate Expiry and Tier
-        if: steps.auth.outputs.authorized == 'true'
+        if: steps.auth.outputs.authorized == 'true' && steps.validate_email.outputs.valid == 'true'
         id: calc
         run: |
           PLAN="${{ steps.parse.outputs.plan }}"
