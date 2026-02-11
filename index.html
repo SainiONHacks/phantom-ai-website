@@ -1334,6 +1334,16 @@
             const selectedPrice = document.getElementById('selectedPrice').textContent;
             const selectedDays = document.getElementById('selectedDays').textContent;
 
+            // Check if user is registered and email verified
+            // In production, this would check against backend database
+            const isEmailVerified = checkEmailVerification(customerEmail);
+            
+            if (!isEmailVerified) {
+                alert('❌ Email Not Verified!\n\nPlease verify your email address before making a purchase.\n\n1. Register/Login to your account\n2. Check your inbox for verification email\n3. Click verification link\n4. Then retry purchase\n\nOR continue as guest (license will still be sent to your email)');
+                // Allow guest purchase to continue
+                // In strict mode, return here to block unverified purchases
+            }
+
             // Generate unique order ID
             const timestamp = Date.now();
             const orderId = `ORD-${timestamp}`;
@@ -1347,7 +1357,8 @@
                 price: selectedPrice,
                 days: selectedDays,
                 timestamp: new Date().toISOString(),
-                status: 'pending'
+                status: 'pending',
+                emailVerified: isEmailVerified
             };
             localStorage.setItem('pendingOrder', JSON.stringify(orderData));
 
@@ -1366,6 +1377,30 @@
             }).catch(error => {
                 alert('❌ Network error. Please try again or contact support.');
             });
+        }
+
+        function checkEmailVerification(email) {
+            // Check if user is logged in and verified
+            const currentUser = localStorage.getItem('phantom_user');
+            if (currentUser) {
+                const user = JSON.parse(currentUser);
+                if (user.email.toLowerCase() === email.toLowerCase() && user.verified) {
+                    return true;
+                }
+            }
+            
+            // Check pending verification
+            const pendingUser = localStorage.getItem('phantom_user_pending');
+            if (pendingUser) {
+                const user = JSON.parse(pendingUser);
+                if (user.email.toLowerCase() === email.toLowerCase()) {
+                    return false; // User exists but not verified
+                }
+            }
+            
+            // New user / guest purchase
+            return false;
+        }
         }
 
         function redirectToPayment(orderData) {
