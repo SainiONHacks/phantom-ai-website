@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,12 +16,95 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
             color: #ffffff;
-            padding: 20px;
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 2px solid rgba(0, 255, 136, 0.3);
+        }
+
+        .navbar .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .navbar .logo {
+            font-size: 24px;
+            font-weight: bold;
+            background: linear-gradient(135deg, #00ff88, #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+
+        .navbar nav {
+            display: flex;
+            gap: 25px;
+            align-items: center;
+        }
+
+        .navbar nav a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            padding: 8px 16px;
+            border-radius: 5px;
+        }
+
+        .navbar nav a:hover {
+            color: #00ff88;
+            background: rgba(0, 255, 136, 0.1);
+        }
+
+        .navbar .btn-admin {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a6f);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+        }
+
+        .navbar .btn-admin:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.5);
+            color: white;
+            background: linear-gradient(135deg, #ee5a6f, #ff6b6b);
+        }
+
+        .navbar .btn-download {
+            background: linear-gradient(135deg, #00ff88, #00d4ff);
+            color: #000;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 255, 136, 0.3);
+        }
+
+        .navbar .btn-download:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 255, 136, 0.5);
+            color: #000;
+            background: linear-gradient(135deg, #00d4ff, #00ff88);
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
+            padding: 20px;
         }
 
         .header {
@@ -361,61 +445,93 @@
         }
     </style>
 </head>
+
 <body>
+    <!-- Navigation Bar -->
+    <div class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">🧠 SainiON AI</a>
+            <nav>
+                <a href="index.html">Home</a>
+                <a href="dashboard.html">Dashboard</a>
+                <a href="#" class="btn-download" onclick="downloadTool()">📥 Download Tool</a>
+                <a href="#" class="btn-admin" onclick="showAdminLogin()">🔐 Admin</a>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Admin Login Modal -->
+    <div id="adminModal" class="modal" style="display:none;">
+        <div class="modal-content" style="max-width: 400px;">
+            <span class="modal-close" onclick="closeAdminModal()">&times;</span>
+            <h2 style="text-align:center;">🔐 Admin Access</h2>
+            <div class="form-group">
+                <label>Admin Password</label>
+                <input type="password" id="adminPassword" placeholder="Enter admin password"
+                    onkeypress="if(event.key==='Enter')checkAdminPassword()">
+            </div>
+            <button class="btn" onclick="checkAdminPassword()">Login</button>
+            <div id="adminError" style="color:#ff6b6b; text-align:center; margin-top:10px; display:none;">Invalid
+                password!</div>
+        </div>
+    </div>
+
     <!-- Login/Signup Form (shown when not logged in) -->
     <div id="loginSection" style="display:none;">
         <div class="login-form">
             <h1 style="text-align:center; margin-bottom:30px; color:#00ff88;">🧠 SainiON AI</h1>
             <h2 style="text-align:center; margin-bottom:20px; color:#888; font-size:18px;">Dashboard Access</h2>
-            
+
             <!-- Tabs for Login/Signup -->
             <div style="display:flex; gap:10px; margin-bottom:30px;">
-                <button id="tabLogin" class="btn" style="flex:1; padding:10px;" onclick="showLoginTab()">🔑 Login</button>
-                <button id="tabSignup" class="btn" style="flex:1; padding:10px; opacity:0.5;" onclick="showSignupTab()">✨ Sign Up</button>
+                <button id="tabLogin" class="btn" style="flex:1; padding:10px;" onclick="showLoginTab()">🔑
+                    Login</button>
+                <button id="tabSignup" class="btn" style="flex:1; padding:10px; opacity:0.5;"
+                    onclick="showSignupTab()">✨ Sign Up</button>
             </div>
-            
+
             <!-- Login Tab -->
             <div id="loginTab">
                 <div class="form-group">
                     <label>📧 Email</label>
                     <input type="email" id="loginEmail" placeholder="your.email@example.com">
                 </div>
-                
+
                 <div class="form-group">
                     <label>🔒 Password</label>
                     <input type="password" id="loginPassword" placeholder="Enter password">
                 </div>
-                
+
                 <button class="btn" onclick="login()">🚀 Login</button>
             </div>
-            
+
             <!-- Signup Tab -->
             <div id="signupTab" style="display:none;">
                 <div class="form-group">
                     <label>👤 Full Name</label>
                     <input type="text" id="signupName" placeholder="John Doe">
                 </div>
-                
+
                 <div class="form-group">
                     <label>📧 Email</label>
                     <input type="email" id="signupEmail" placeholder="your.email@example.com">
                 </div>
-                
+
                 <div class="form-group">
                     <label>🔒 Password</label>
                     <input type="password" id="signupPassword" placeholder="Min 6 characters">
                 </div>
-                
+
                 <div class="form-group">
                     <label>🔒 Confirm Password</label>
                     <input type="password" id="signupConfirm" placeholder="Re-enter password">
                 </div>
-                
+
                 <button class="btn" onclick="signup()">✨ Create Account</button>
             </div>
-            
+
             <div id="loginMessage"></div>
-            
+
             <div style="text-align:center; margin-top:20px; color:#888; font-size:13px;">
                 💡 Create account to track licenses & get updates<br>
                 Or use the desktop app for full features
@@ -494,7 +610,8 @@
             <div class="section">
                 <h2>⚡ Quick Actions</h2>
                 <a href="https://sainionhacks.github.io/sainion-ai-website/" class="action-btn">🏠 Visit Website</a>
-                <a href="https://sainionhacks.github.io/sainion-ai-website/#pricing" class="action-btn">💳 Purchase License</a>
+                <a href="https://sainionhacks.github.io/sainion-ai-website/#pricing" class="action-btn">💳 Purchase
+                    License</a>
                 <a href="#" onclick="openFeedbackForm(); return false;" class="action-btn">📧 Contact Support</a>
             </div>
 
@@ -502,31 +619,34 @@
             <div class="section">
                 <h2>⬇️ Download & Tutorial</h2>
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
-                    <div style="background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(0, 212, 255, 0.1)); padding: 25px; border-radius: 15px; border: 2px solid rgba(0, 255, 136, 0.3);">
+                    <div
+                        style="background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(0, 212, 255, 0.1)); padding: 25px; border-radius: 15px; border: 2px solid rgba(0, 255, 136, 0.3);">
                         <div style="font-size: 48px; text-align: center; margin-bottom: 15px;">📦</div>
                         <h3 style="color: #00ff88; text-align: center; margin-bottom: 15px;">Professional Installer</h3>
-                        <p style="color: #b0b0b0; text-align: center; margin-bottom: 20px;">Complete package with app, tutorial video, and documentation</p>
-                        <div style="text-align: center; font-size: 24px; color: #00d4ff; margin-bottom: 15px;">
-                            <strong>704 MB</strong>
-                        </div>
-                        <a href="https://github.com/SainiONHacks/sainion-ai-website/releases/download/v2.1/SainiON_AI_v2.1_Setup.exe" style="display: block; text-align: center; padding: 15px; background: linear-gradient(135deg, #00ff88, #00d4ff); color: #000; text-decoration: none; border-radius: 10px; font-weight: bold; transition: all 0.3s;">
+                        <p style="color: #b0b0b0; text-align: center; margin-bottom: 20px;">Complete package with app,
+                            tutorial video, and documentation</p>
+                        <a href="https://github.com/SainiONHacks/sainion-ai-website/releases" target="_blank"
+                            style="display: block; text-align: center; padding: 15px; background: linear-gradient(135deg, #00ff88, #00d4ff); color: #000; text-decoration: none; border-radius: 10px; font-weight: bold; transition: all 0.3s;">
                             ⬇️ Download Installer
                         </a>
                         <div style="margin-top: 15px; font-size: 12px; color: #888; text-align: center;">
                             ✅ Installs to: C:\Program Files\SainiON AI<br>
-                            ✅ Includes: 335 MB Tutorial Video<br>
+                            ✅ Includes Tutorial Video<br>
                             ✅ Easy uninstall included
                         </div>
                     </div>
 
-                    <div style="background: rgba(255, 0, 0, 0.1); padding: 25px; border-radius: 15px; border: 2px solid rgba(255, 0, 0, 0.3);">
+                    <div
+                        style="background: rgba(255, 0, 0, 0.1); padding: 25px; border-radius: 15px; border: 2px solid rgba(255, 0, 0, 0.3);">
                         <div style="font-size: 48px; text-align: center; margin-bottom: 15px;">🎬</div>
                         <h3 style="color: #ff6b6b; text-align: center; margin-bottom: 15px;">Video Tutorial</h3>
-                        <p style="color: #b0b0b0; text-align: center; margin-bottom: 20px;">Complete walkthrough of features, setup, and usage</p>
+                        <p style="color: #b0b0b0; text-align: center; margin-bottom: 20px;">Complete walkthrough of
+                            features, setup, and usage</p>
                         <div style="text-align: center; font-size: 16px; color: #888; margin-bottom: 15px;">
                             Watch on YouTube or access offline from installation
                         </div>
-                        <a href="https://youtu.be/MOdK0_w1KZc" target="_blank" style="display: block; text-align: center; padding: 15px; background: rgba(255, 0, 0, 0.3); border: 2px solid #ff0000; color: #fff; text-decoration: none; border-radius: 10px; font-weight: bold; transition: all 0.3s;">
+                        <a href="https://youtu.be/MOdK0_w1KZc" target="_blank"
+                            style="display: block; text-align: center; padding: 15px; background: rgba(255, 0, 0, 0.3); border: 2px solid #ff0000; color: #fff; text-decoration: none; border-radius: 10px; font-weight: bold; transition: all 0.3s;">
                             📺 Watch on YouTube
                         </a>
                         <div style="margin-top: 15px; font-size: 12px; color: #888; text-align: center;">
@@ -535,16 +655,20 @@
                         </div>
                     </div>
 
-                    <div style="background: rgba(0, 212, 255, 0.1); padding: 25px; border-radius: 15px; border: 2px solid rgba(0, 212, 255, 0.3);">
+                    <div
+                        style="background: rgba(0, 212, 255, 0.1); padding: 25px; border-radius: 15px; border: 2px solid rgba(0, 212, 255, 0.3);">
                         <div style="font-size: 48px; text-align: center; margin-bottom: 15px;">📚</div>
                         <h3 style="color: #00d4ff; text-align: center; margin-bottom: 15px;">Help & Documentation</h3>
-                        <p style="color: #b0b0b0; text-align: center; margin-bottom: 20px;">Complete setup guides, troubleshooting, and tips</p>
+                        <p style="color: #b0b0b0; text-align: center; margin-bottom: 20px;">Complete setup guides,
+                            troubleshooting, and tips</p>
                         <div style="margin-top: 20px;">
-                            <div style="background: rgba(0, 212, 255, 0.1); padding: 12px; border-radius: 8px; margin-bottom: 10px;">
+                            <div
+                                style="background: rgba(0, 212, 255, 0.1); padding: 12px; border-radius: 8px; margin-bottom: 10px;">
                                 <strong style="color: #00d4ff;">📖 Setup Guide</strong><br>
                                 <span style="font-size: 12px; color: #888;">Included in Start Menu after install</span>
                             </div>
-                            <div style="background: rgba(0, 212, 255, 0.1); padding: 12px; border-radius: 8px; margin-bottom: 10px;">
+                            <div
+                                style="background: rgba(0, 212, 255, 0.1); padding: 12px; border-radius: 8px; margin-bottom: 10px;">
                                 <strong style="color: #00d4ff;">🔧 Troubleshooting</strong><br>
                                 <span style="font-size: 12px; color: #888;">Check TUTORIAL.txt after install</span>
                             </div>
@@ -557,10 +681,12 @@
                 </div>
 
                 <!-- Installation Steps -->
-                <div style="margin-top: 30px; background: rgba(0, 255, 136, 0.05); padding: 25px; border-radius: 15px; border: 2px solid rgba(0, 255, 136, 0.2);">
+                <div
+                    style="margin-top: 30px; background: rgba(0, 255, 136, 0.05); padding: 25px; border-radius: 15px; border: 2px solid rgba(0, 255, 136, 0.2);">
                     <h3 style="color: #00ff88; margin-bottom: 20px; text-align: center;">📥 Installation Steps</h3>
                     <ol style="color: #b0b0b0; line-height: 2.5; padding-left: 25px;">
-                        <li>Download <strong style="color: #00ff88;">SainiON_AI_v2.1_Setup.exe</strong> (704 MB)</li>
+                        <li>Download <strong style="color: #00ff88;">SainiON_AI_v2.1_Setup.exe</strong> from releases
+                        </li>
                         <li>Run the installer - professional wizard will guide you</li>
                         <li>Choose installation location (default: <strong>C:\Program Files\SainiON AI</strong>)</li>
                         <li>Select optional desktop shortcut</li>
@@ -568,9 +694,11 @@
                         <li>Find in <strong>Start Menu → SainiON AI</strong></li>
                         <li>Launch app, enter your <strong style="color: #00d4ff;">license key</strong>, and enjoy!</li>
                     </ol>
-                    <div style="margin-top: 20px; text-align: center; padding: 15px; background: rgba(0, 212, 255, 0.1); border-radius: 10px;">
+                    <div
+                        style="margin-top: 20px; text-align: center; padding: 15px; background: rgba(0, 212, 255, 0.1); border-radius: 10px;">
                         <strong style="color: #00d4ff;">📂 After Installation, Find in Start Menu:</strong><br>
-                        <span style="color: #888; font-size: 14px;">SainiON AI • Tutorial Video • Online Tutorial • Help and Tutorials • Uninstall</span>
+                        <span style="color: #888; font-size: 14px;">SainiON AI • Tutorial Video • Online Tutorial • Help
+                            and Tutorials • Uninstall</span>
                     </div>
                 </div>
             </div>
@@ -632,8 +760,18 @@
                 return;
             }
 
-            // Simulate login (In production, verify against GitHub API)
-            // For demo, accept any email/password
+            // Check if user has pending verification
+            const pendingUser = localStorage.getItem('phantom_user_pending');
+            if (pendingUser) {
+                const pending = JSON.parse(pendingUser);
+                if (pending.email === email && !pending.verified) {
+                    messageDiv.className = 'error';
+                    messageDiv.innerHTML = '❌ Please verify your email first!<br>📧 Check your inbox for verification link.<br><a href="#" onclick="resendVerification(\'' + email + '\'); return false;" style="color:#00FF88;">Resend verification email</a>';
+                    return;
+                }
+            }
+
+            // Simulate login (In production, verify against GitHub API with verification check)
             messageDiv.className = 'success';
             messageDiv.textContent = '✅ Logging in...';
 
@@ -652,6 +790,11 @@
                 currentUser = user;
                 showDashboard();
             }, 1000);
+        }
+
+        function resendVerification(email) {
+            // NOTE: In production, call backend API to resend verification
+            alert('📧 Verification email sent to ' + email + '!\nPlease check your inbox (including spam folder).');
         }
 
         function signup() {
@@ -686,14 +829,17 @@
                 return;
             }
 
-            // Simulate signup
+            // Show verification requirement message
             messageDiv.className = 'success';
-            messageDiv.textContent = '✅ Creating account...';
+            messageDiv.textContent = '✅ Creating account and sending verification email...';
 
             setTimeout(() => {
+                // Note: In production, this should call backend API to create account
+                // For demo purposes, storing in localStorage (requires verification in production)
                 const user = {
                     email: email,
                     name: name,
+                    verified: false, // Email not verified yet
                     usage_stats: {
                         total_sessions: 0,
                         total_queries: 0
@@ -701,14 +847,18 @@
                     licenses: []
                 };
 
-                localStorage.setItem('phantom_user', JSON.stringify(user));
-                currentUser = user;
-                
-                messageDiv.textContent = '✅ Account created! Welcome!';
-                setTimeout(() => {
-                    showDashboard();
-                }, 1000);
-            }, 1000);
+                // Store unverified user
+                localStorage.setItem('phantom_user_pending', JSON.stringify(user));
+
+                messageDiv.className = 'success';
+                messageDiv.innerHTML = '✅ Account created!<br>📧 Please check your email (' + email + ') to verify your account.<br>⚠️ You must verify your email before logging in.';
+
+                // Clear form
+                document.getElementById('signupName').value = '';
+                document.getElementById('signupEmail').value = '';
+                document.getElementById('signupPassword').value = '';
+                document.getElementById('signupConfirm').value = '';
+            }, 1500);
         }
 
         function logout() {
@@ -770,14 +920,14 @@
             event.preventDefault();
             const formData = new FormData(event.target);
             const data = Object.fromEntries(formData);
-            
+
             // Show loading
             const submitBtn = event.target.querySelector('button[type="submit"]');
             submitBtn.textContent = '⏳ Sending...';
             submitBtn.disabled = true;
 
             // Send via FormSubmit.co (free email service)
-            fetch('https://formsubmit.co/nitinsaini077@gmail.com', {
+            fetch('https://formsubmit.co/ajax/nitinsaini077@gmail.com', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -793,22 +943,22 @@
                     Message: data.message
                 })
             })
-            .then(response => response.json())
-            .then(data => {
-                alert('✅ Message sent successfully! We will get back to you soon.');
-                closeFeedbackForm();
-            })
-            .catch(error => {
-                alert('❌ Failed to send message. Please try again or email directly to nitinsaini077@gmail.com');
-            })
-            .finally(() => {
-                submitBtn.textContent = '📤 Send Message';
-                submitBtn.disabled = false;
-            });
+                .then(response => response.json())
+                .then(data => {
+                    alert('✅ Message sent successfully! We will get back to you soon.');
+                    closeFeedbackForm();
+                })
+                .catch(error => {
+                    alert('❌ Failed to send message. Please try again or contact support.');
+                })
+                .finally(() => {
+                    submitBtn.textContent = '📤 Send Message';
+                    submitBtn.disabled = false;
+                });
         }
 
         // Close modal when clicking outside
-        window.onclick = function(event) {
+        window.onclick = function (event) {
             const feedbackModal = document.getElementById('feedbackModal');
             if (event.target == feedbackModal) {
                 closeFeedbackForm();
@@ -822,18 +972,18 @@
             <span class="modal-close" onclick="closeFeedbackForm()">&times;</span>
             <h2>📧 Contact Support / Send Feedback</h2>
             <p style="color:#888; margin-bottom:20px;">Have questions, issues, or suggestions? Send us a message!</p>
-            
+
             <form id="feedbackFormElement" onsubmit="submitFeedbackForm(event)">
                 <div class="form-group">
                     <label>👤 Your Name</label>
                     <input type="text" name="name" required placeholder="John Doe">
                 </div>
-                
+
                 <div class="form-group">
                     <label>📧 Your Email</label>
                     <input type="email" name="email" required placeholder="your.email@example.com">
                 </div>
-                
+
                 <div class="form-group">
                     <label>📝 Subject</label>
                     <select name="subject" required>
@@ -847,16 +997,51 @@
                         <option value="Other">Other</option>
                     </select>
                 </div>
-                
+
                 <div class="form-group">
                     <label>💬 Message</label>
-                    <textarea name="message" required placeholder="Describe your question, issue, or feedback in detail..."></textarea>
+                    <textarea name="message" required
+                        placeholder="Describe your question, issue, or feedback in detail..."></textarea>
                 </div>
-                
+
                 <button type="submit" class="btn">📤 Send Message</button>
             </form>
         </div>
     </div>
 
+    <script>
+        // Admin Login Functions
+        const ADMIN_PASSWORD = "admin@123"; // Change this to your secure password
+
+        function showAdminLogin() {
+            document.getElementById('adminModal').style.display = 'flex';
+            document.getElementById('adminPassword').value = '';
+            document.getElementById('adminError').style.display = 'none';
+        }
+
+        function closeAdminModal() {
+            document.getElementById('adminModal').style.display = 'none';
+        }
+
+        function checkAdminPassword() {
+            const password = document.getElementById('adminPassword').value;
+            if (password === ADMIN_PASSWORD) {
+                // Correct password - redirect to admin dashboard
+                window.location.href = 'admin_dashboard.html';
+            } else {
+                // Wrong password - show error
+                document.getElementById('adminError').style.display = 'block';
+                document.getElementById('adminPassword').value = '';
+            }
+        }
+
+        // Download Tool Function
+        function downloadTool() {
+            // Redirect directly to GitHub releases
+            window.open('https://github.com/SainiONHacks/sainion-ai-website/releases', '_blank');
+        }
+    </script>
+
 </body>
+
 </html>
