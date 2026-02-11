@@ -28,7 +28,7 @@
             backdrop-filter: blur(10px);
             border-radius: 20px;
             padding: 40px;
-            max-width: 600px;
+            max-width: 700px;
             width: 100%;
             text-align: center;
             box-shadow: 0 8px 32px rgba(0, 255, 136, 0.2);
@@ -81,9 +81,60 @@
             margin-bottom: 30px;
         }
 
+        .license-box {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.2), rgba(0, 212, 255, 0.2));
+            border: 3px solid #00FF88;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+        }
+
+        .license-label {
+            color: #00d4ff;
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .license-key {
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid rgba(0, 255, 136, 0.5);
+            border-radius: 10px;
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 24px;
+            color: #00FF88;
+            letter-spacing: 2px;
+            word-break: break-all;
+            margin: 15px 0;
+            user-select: all;
+        }
+
+        .copy-button {
+            background: linear-gradient(135deg, #00FF88, #00d4ff);
+            color: #000;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 10px 5px;
+            transition: all 0.3s;
+        }
+
+        .copy-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 255, 136, 0.5);
+        }
+
+        .copy-button:active {
+            transform: translateY(0);
+        }
+
         .info-box {
-            background: rgba(0, 255, 136, 0.1);
-            border: 2px solid rgba(0, 255, 136, 0.3);
+            background: rgba(0, 212, 255, 0.1);
+            border: 2px solid rgba(0, 212, 255, 0.3);
             border-radius: 10px;
             padding: 20px;
             margin: 20px 0;
@@ -95,6 +146,7 @@
             justify-content: space-between;
             padding: 10px 0;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            color: #E0E0E0;
         }
 
         .info-row:last-child {
@@ -102,83 +154,43 @@
         }
 
         .info-label {
-            color: #888;
-            font-size: 14px;
+            color: #00d4ff;
+            font-weight: bold;
         }
 
         .info-value {
             color: #00FF88;
             font-weight: bold;
-            font-size: 14px;
-        }
-
-        .license-box {
-            background: #1a1a2e;
-            border: 2px solid #00FF88;
-            border-radius: 10px;
-            padding: 20px;
-            margin: 20px 0;
-        }
-
-        .license-label {
-            color: #888;
-            font-size: 14px;
-            margin-bottom: 10px;
-        }
-
-        .license-key {
-            color: #00FF88;
-            font-size: 24px;
-            font-weight: bold;
-            font-family: 'Courier New', monospace;
-            letter-spacing: 2px;
-            word-break: break-all;
-            margin: 10px 0;
-        }
-
-        .copy-btn {
-            background: #00FF88;
-            color: #000;
-            border: none;
-            padding: 10px 20px;
-            font-size: 14px;
-            font-weight: bold;
-            border-radius: 6px;
-            cursor: pointer;
-            margin-top: 10px;
-            transition: all 0.3s ease;
-        }
-
-        .copy-btn:hover {
-            background: #00FFAA;
-            transform: translateY(-2px);
         }
 
         .steps-box {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 193, 7, 0.1);
+            border: 2px solid rgba(255, 193, 7, 0.3);
             border-radius: 10px;
-            padding: 20px;
-            margin: 20px 0;
+            padding: 25px;
+            margin: 30px 0;
             text-align: left;
         }
 
         .steps-box h3 {
-            color: #00FF88;
-            margin-bottom: 15px;
+            color: #ffc107;
+            margin-bottom: 20px;
             text-align: center;
+            font-size: 22px;
         }
 
         .step {
             display: flex;
             align-items: flex-start;
             margin: 15px 0;
+            color: #E0E0E0;
         }
 
         .step-number {
-            background: #00FF88;
+            background: linear-gradient(135deg, #00FF88, #00d4ff);
             color: #000;
-            width: 30px;
-            height: 30px;
+            width: 35px;
+            height: 35px;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -189,68 +201,446 @@
         }
 
         .step-text {
-            color: #E0E0E0;
-            font-size: 14px;
+            flex: 1;
+            padding-top: 5px;
             line-height: 1.6;
         }
 
-        .btn {
-            background: #00FF88;
-            color: #000;
-            border: none;
-            padding: 15px 40px;
-            font-size: 16px;
-            font-weight: bold;
-            border-radius: 8px;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-block;
-            margin: 10px;
-            transition: all 0.3s ease;
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+            flex-wrap: wrap;
         }
 
-        .btn:hover {
-            background: #00FFAA;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 255, 136, 0.4);
+        .action-button {
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #00FF88, #00d4ff);
+            color: #000;
         }
 
         .btn-secondary {
             background: rgba(255, 255, 255, 0.1);
-            color: #00FF88;
-            border: 2px solid #00FF88;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: #fff;
         }
 
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.2);
+        .action-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 255, 136, 0.3);
         }
 
         .email-notice {
-            background: rgba(255, 193, 7, 0.1);
-            border: 1px solid rgba(255, 193, 7, 0.3);
-            border-radius: 8px;
+            background: rgba(0, 255, 136, 0.05);
+            border-left: 4px solid #00FF88;
             padding: 15px;
             margin: 20px 0;
-            color: #ffc107;
-            font-size: 14px;
+            text-align: left;
+            color: #E0E0E0;
+            border-radius: 5px;
         }
 
-        .loading {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(0, 255, 136, 0.3);
-            border-top-color: #00FF88;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
+        .email-notice strong {
+            color: #00FF88;
         }
 
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
+        @media (max-width: 600px) {
+            .success-container {
+                padding: 25px;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+
+            .license-key {
+                font-size: 18px;
+                padding: 15px;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .action-button {
+                width: 100%;
             }
         }
     </style>
+</head>
+
+<body>
+    <div class="success-container">
+        <div class="success-icon">✓</div>
+        <h1>🎉 Payment Successful!</h1>
+        <p class="subtitle">Your license has been activated</p>
+
+        <div class="license-box">
+            <div class="license-label">YOUR LICENSE KEY</div>
+            <div class="license-key" id="licenseKey">Loading...</div>
+            <button class="copy-button" onclick="copyLicenseKey()">📋 Copy License Key</button>
+            <button class="copy-button" onclick="downloadLicenseFile()">💾 Download as File</button>
+        </div>
+
+        <div class="email-notice">
+            <strong>📧 Email Sent!</strong><br>
+            We've sent your license key to <span id="userEmail">your email address</span>.
+            Please check your inbox (and spam folder) for detailed instructions.
+        </div>
+
+        <div class="info-box">
+            <div class="info-row">
+                <span class="info-label">Plan:</span>
+                <span class="info-value" id="planName">Loading...</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Amount Paid:</span>
+                <span class="info-value" id="amountPaid">₹0</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Duration:</span>
+                <span class="info-value" id="planDuration">Loading...</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Valid Until:</span>
+                <span class="info-value" id="validUntil">Loading...</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Payment ID:</span>
+                <span class="info-value" id="paymentId">Loading...</span>
+            </div>
+        </div>
+
+        <div class="steps-box">
+            <h3>🚀 Next Steps - Activate Your Tool</h3>
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-text">
+                    <strong>Download the Tool</strong><br>
+                    Download SainiON AI desktop application from our website
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-text">
+                    <strong>Open the Tool</strong><br>
+                    Launch SainiON AI on your computer
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-text">
+                    <strong>Enter License Key</strong><br>
+                    Click ☰ Menu → My Account → Enter your license key above
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number">4</div>
+                <div class="step-text">
+                    <strong>Start Using!</strong><br>
+                    All features will be unlocked. Enjoy your AI assistant!
+                </div>
+            </div>
+        </div>
+
+        <div class="action-buttons">
+            <a href="index.html#download" class="action-button btn-primary">💾 Download Tool</a>
+            <a href="dashboard.html" class="action-button btn-secondary">📊 Go to Dashboard</a>
+        </div>
+
+        <div class="info-box" style="margin-top: 30px; text-align: center;">
+            <p style="color: #888; font-size: 14px;">
+                Need help? Contact us at <a href="mailto:support@sainion.ai"
+                    style="color: #00FF88;">support@sainion.ai</a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Get license key from URL or localStorage
+        function getLicenseInfo() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const keyFromURL = urlParams.get('key');
+
+            if (keyFromURL) {
+                return {
+                    licenseKey: keyFromURL,
+                    fromURL: true
+                };
+            }
+
+            // Try to get from localStorage
+            const purchaseData = localStorage.getItem('currentLicense');
+            if (purchaseData) {
+                return {
+                    ...JSON.parse(purchaseData),
+                    fromURL: false
+                };
+            }
+
+            return null;
+        }
+
+        // Display license information
+        function displayLicenseInfo() {
+            const licenseInfo = getLicenseInfo();
+
+            if (!licenseInfo) {
+                document.getElementById('licenseKey').textContent = 'No license found';
+                alert('No license information found. Please contact support.');
+                return;
+            }
+
+            // Display license key
+            document.getElementById('licenseKey').textContent = licenseInfo.licenseKey;
+
+            // If we have full purchase data
+            if (!licenseInfo.fromURL) {
+                document.getElementById('planName').textContent = licenseInfo.plan || 'N/A';
+                document.getElementById('amountPaid').textContent = `₹${licenseInfo.price || 0}`;
+                document.getElementById('planDuration').textContent = licenseInfo.duration || 'N/A';
+                document.getElementById('paymentId').textContent = licenseInfo.paymentId || 'N/A';
+                document.getElementById('userEmail').textContent = licenseInfo.email || 'your email';
+
+                // Format expiry date
+                if (licenseInfo.expiryDate) {
+                    const expiry = new Date(licenseInfo.expiryDate);
+                    document.getElementById('validUntil').textContent = expiry.toLocaleDateString() + ' ' + expiry.toLocaleTimeString();
+                }
+            }
+        }
+
+        // Copy license key to clipboard
+        function copyLicenseKey() {
+            const licenseKey = document.getElementById('licenseKey').textContent;
+            navigator.clipboard.writeText(licenseKey).then(() => {
+                const btn = event.target;
+                const originalText = btn.textContent;
+                btn.textContent = '✓ Copied!';
+                btn.style.background = 'linear-gradient(135deg, #4CAF50, #8BC34A)';
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.style.background = 'linear-gradient(135deg, #00FF88, #00d4ff)';
+                }, 2000);
+            }).catch(err => {
+                alert('Failed to copy: ' + err);
+            });
+        }
+
+        // Download license as text file
+        function downloadLicenseFile() {
+            const licenseInfo = getLicenseInfo();
+            if (!licenseInfo) return;
+
+            const content = `
+========================================
+SAINION AI - LICENSE KEY
+========================================
+
+License Key: ${licenseInfo.licenseKey}
+Plan: ${licenseInfo.plan || 'N/A'}
+Amount Paid: ₹${licenseInfo.price || 0}
+Duration: ${licenseInfo.duration || 'N/A'}
+Purchase Date: ${licenseInfo.purchaseDate ? new Date(licenseInfo.purchaseDate).toLocaleString() : 'N/A'}
+Valid Until: ${licenseInfo.expiryDate ? new Date(licenseInfo.expiryDate).toLocaleString() : 'N/A'}
+Payment ID: ${licenseInfo.paymentId || 'N/A'}
+Email: ${licenseInfo.email || 'N/A'}
+
+========================================
+ACTIVATION INSTRUCTIONS:
+========================================
+
+1. Download SainiON AI from: https://sainionhacks.github.io/sainion-ai-website/
+2. Install and launch the application
+3. Click Menu (☰) → My Account
+4. Enter your license key above
+5. Click "Activate" to unlock all features
+
+Need help? Contact: support@sainion.ai
+
+========================================
+            `;
+
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `SainiON_AI_License_${licenseInfo.licenseKey.substring(0, 10)}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', displayLicenseInfo);
+    </script>
+</body>
+
+</html>
+border-bottom: none;
+}
+
+.info-label {
+color: #888;
+font-size: 14px;
+}
+
+.info-value {
+color: #00FF88;
+font-weight: bold;
+font-size: 14px;
+}
+
+.license-box {
+background: #1a1a2e;
+border: 2px solid #00FF88;
+border-radius: 10px;
+padding: 20px;
+margin: 20px 0;
+}
+
+.license-label {
+color: #888;
+font-size: 14px;
+margin-bottom: 10px;
+}
+
+.license-key {
+color: #00FF88;
+font-size: 24px;
+font-weight: bold;
+font-family: 'Courier New', monospace;
+letter-spacing: 2px;
+word-break: break-all;
+margin: 10px 0;
+}
+
+.copy-btn {
+background: #00FF88;
+color: #000;
+border: none;
+padding: 10px 20px;
+font-size: 14px;
+font-weight: bold;
+border-radius: 6px;
+cursor: pointer;
+margin-top: 10px;
+transition: all 0.3s ease;
+}
+
+.copy-btn:hover {
+background: #00FFAA;
+transform: translateY(-2px);
+}
+
+.steps-box {
+background: rgba(255, 255, 255, 0.05);
+border-radius: 10px;
+padding: 20px;
+margin: 20px 0;
+text-align: left;
+}
+
+.steps-box h3 {
+color: #00FF88;
+margin-bottom: 15px;
+text-align: center;
+}
+
+.step {
+display: flex;
+align-items: flex-start;
+margin: 15px 0;
+}
+
+.step-number {
+background: #00FF88;
+color: #000;
+width: 30px;
+height: 30px;
+border-radius: 50%;
+display: flex;
+align-items: center;
+justify-content: center;
+font-weight: bold;
+margin-right: 15px;
+flex-shrink: 0;
+}
+
+.step-text {
+color: #E0E0E0;
+font-size: 14px;
+line-height: 1.6;
+}
+
+.btn {
+background: #00FF88;
+color: #000;
+border: none;
+padding: 15px 40px;
+font-size: 16px;
+font-weight: bold;
+border-radius: 8px;
+cursor: pointer;
+text-decoration: none;
+display: inline-block;
+margin: 10px;
+transition: all 0.3s ease;
+}
+
+.btn:hover {
+background: #00FFAA;
+transform: translateY(-2px);
+box-shadow: 0 4px 12px rgba(0, 255, 136, 0.4);
+}
+
+.btn-secondary {
+background: rgba(255, 255, 255, 0.1);
+color: #00FF88;
+border: 2px solid #00FF88;
+}
+
+.btn-secondary:hover {
+background: rgba(255, 255, 255, 0.2);
+}
+
+.email-notice {
+background: rgba(255, 193, 7, 0.1);
+border: 1px solid rgba(255, 193, 7, 0.3);
+border-radius: 8px;
+padding: 15px;
+margin: 20px 0;
+color: #ffc107;
+font-size: 14px;
+}
+
+.loading {
+display: inline-block;
+width: 20px;
+height: 20px;
+border: 3px solid rgba(0, 255, 136, 0.3);
+border-top-color: #00FF88;
+border-radius: 50%;
+animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+to {
+transform: rotate(360deg);
+}
+}
+</style>
 </head>
 
 <body>

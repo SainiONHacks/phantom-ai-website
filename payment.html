@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Purchase - SainiON AI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .payment-container {
+            max-width: 600px;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(0, 255, 136, 0.3);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 32px;
+            background: linear-gradient(135deg, #00ff88, #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .plan-details {
+            background: rgba(0, 255, 136, 0.1);
+            border: 2px solid rgba(0, 255, 136, 0.3);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+        }
+
+        .plan-name {
+            font-size: 28px;
+            color: #00ff88;
+            margin-bottom: 10px;
+        }
+
+        .plan-price {
+            font-size: 48px;
+            font-weight: bold;
+            color: #00d4ff;
+            margin: 20px 0;
+        }
+
+        .plan-duration {
+            color: #888;
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .features {
+            text-align: left;
+            margin: 20px 0;
+        }
+
+        .features li {
+            color: #b0b0b0;
+            margin: 10px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .features li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #00ff88;
+            font-weight: bold;
+        }
+
+        .user-info {
+            background: rgba(0, 212, 255, 0.1);
+            border: 2px solid rgba(0, 212, 255, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .user-info p {
+            margin: 10px 0;
+            color: #b0b0b0;
+        }
+
+        .user-info strong {
+            color: #00d4ff;
+        }
+
+        .payment-button-container {
+            margin: 30px 0;
+        }
+
+        .razorpay-payment-button {
+            background: linear-gradient(135deg, #00ff88, #00d4ff) !important;
+            color: #000 !important;
+            font-size: 20px !important;
+            font-weight: bold !important;
+            padding: 15px 40px !important;
+            border: none !important;
+            border-radius: 10px !important;
+            cursor: pointer !important;
+            transition: all 0.3s !important;
+        }
+
+        .razorpay-payment-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.5);
+        }
+
+        .info-box {
+            background: rgba(255, 193, 7, 0.1);
+            border: 2px solid rgba(255, 193, 7, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .info-box h3 {
+            color: #ffc107;
+            margin-bottom: 10px;
+        }
+
+        .info-box p {
+            color: #b0b0b0;
+            line-height: 1.6;
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            color: #fff;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .loading {
+            display: none;
+            margin: 20px 0;
+        }
+
+        .spinner {
+            border: 4px solid rgba(0, 255, 136, 0.3);
+            border-top: 4px solid #00ff88;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="payment-container">
+        <h1>🚀 Complete Your Purchase</h1>
+        <p style="color: #888; margin-bottom: 20px;">Secure payment powered by Razorpay</p>
+
+        <div class="plan-details" id="planDetails">
+            <div class="plan-name" id="planName">Loading...</div>
+            <div class="plan-price" id="planPrice">₹0</div>
+            <div class="plan-duration" id="planDuration">Loading...</div>
+            <ul class="features" id="planFeatures"></ul>
+        </div>
+
+        <div class="user-info" id="userInfo">
+            <p><strong>📧 Email:</strong> <span id="userEmail">Not logged in</span></p>
+            <p><strong>👤 Account:</strong> <span id="userName">Guest</span></p>
+        </div>
+
+        <div class="info-box">
+            <h3>📬 What Happens After Payment?</h3>
+            <p>
+                ✓ Instant license key generation<br>
+                ✓ Email sent with your license key<br>
+                ✓ Automatic account activation<br>
+                ✓ Access to download and use SainiON AI
+            </p>
+        </div>
+
+        <div class="payment-button-container">
+            <form>
+                <script src="https://checkout.razorpay.com/v1/payment-button.js"
+                    data-payment_button_id="pl_SEt10UdzCvhYrN" async> </script>
+            </form>
+        </div>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p style="margin-top: 15px; color: #00ff88;">Processing payment...</p>
+        </div>
+
+        <div class="info-box">
+            <h3>🔒 Secure Payment</h3>
+            <p>
+                Your payment is processed securely through Razorpay. We never store your card details.
+                All transactions are encrypted and PCI-DSS compliant.
+            </p>
+        </div>
+
+        <a href="dashboard.html" class="back-button">← Back to Dashboard</a>
+    </div>
+
+    <script>
+        // Plans configuration
+        const PLANS = {
+            'demo': {
+                name: 'Free Demo',
+                price: 0,
+                duration: '6 Hours',
+                features: ['Voice Recognition', 'Interview Assistant', 'Resume Analyzer', 'Web Search', 'Perfect for Testing']
+            },
+            'first-time': {
+                name: 'First Time Plan',
+                price: 100,
+                duration: 'Full Day Access (First Purchase Only)',
+                features: ['Full Feature Access', 'All AI Models', 'Voice Recognition', 'Interview Assistant', 'Resume Analyzer', 'Web Search']
+            },
+            'daily': {
+                name: 'Daily Plan',
+                price: 300,
+                duration: '1 Day Access',
+                features: ['Full Feature Access', 'All AI Models', 'Voice Recognition', 'Interview Assistant', 'Resume Analyzer', 'Web Search']
+            },
+            '15-days': {
+                name: '15 Days Plan',
+                price: 1000,
+                duration: '15 Days Access',
+                features: ['Full Feature Access', 'All AI Models', 'Priority Support', 'Voice Recognition', 'Interview Assistant', 'Best Value']
+            },
+            'monthly': {
+                name: '1 Month Plan',
+                price: 2000,
+                duration: '1 Month Access',
+                features: ['Full Feature Access', 'All AI Models', 'Priority Support', 'Regular Updates', 'Best for Professional Use']
+            }
+        };
+
+        // Get plan from URL parameters
+        function getURLParameter(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        // Load plan details
+        function loadPlanDetails() {
+            const planType = getURLParameter('plan') || 'daily';
+            const plan = PLANS[planType] || PLANS['daily'];
+
+            document.getElementById('planName').textContent = plan.name;
+            document.getElementById('planPrice').textContent = `₹${plan.price}`;
+            document.getElementById('planDuration').textContent = plan.duration;
+
+            const featuresList = document.getElementById('planFeatures');
+            featuresList.innerHTML = '';
+            plan.features.forEach(feature => {
+                const li = document.createElement('li');
+                li.textContent = feature;
+                featuresList.appendChild(li);
+            });
+
+            // Store plan info for payment callback
+            sessionStorage.setItem('selectedPlan', JSON.stringify({
+                type: planType,
+                ...plan
+            }));
+        }
+
+        // Load user info from session
+        function loadUserInfo() {
+            const userEmail = sessionStorage.getItem('userEmail') || 'guest@sainion.ai';
+            const userName = sessionStorage.getItem('userName') || 'Guest User';
+
+            document.getElementById('userEmail').textContent = userEmail;
+            document.getElementById('userName').textContent = userName;
+        }
+
+        // Payment success handler
+        function handlePaymentSuccess(response) {
+            console.log('Payment successful:', response);
+
+            // Show loading
+            document.getElementById('loading').style.display = 'block';
+
+            // Get plan and user info
+            const plan = JSON.parse(sessionStorage.getItem('selectedPlan'));
+            const userEmail = sessionStorage.getItem('userEmail');
+
+            // Generate license key
+            const licenseKey = generateLicenseKey(plan.type);
+
+            // Save to localStorage (in production, use backend)
+            const purchaseData = {
+                licenseKey: licenseKey,
+                plan: plan.name,
+                price: plan.price,
+                duration: plan.duration,
+                email: userEmail,
+                purchaseDate: new Date().toISOString(),
+                expiryDate: calculateExpiryDate(plan.type),
+                paymentId: response.razorpay_payment_id || 'DEMO_' + Date.now(),
+                status: 'active'
+            };
+
+            // Store purchase
+            localStorage.setItem('currentLicense', JSON.stringify(purchaseData));
+
+            // Add to purchase history
+            let purchases = JSON.parse(localStorage.getItem('purchaseHistory') || '[]');
+            purchases.unshift(purchaseData);
+            localStorage.setItem('purchaseHistory', JSON.stringify(purchases));
+
+            // Send email (simulate in this version)
+            sendLicenseEmail(purchaseData);
+
+            // Redirect to success page
+            setTimeout(() => {
+                window.location.href = `payment-success.html?key=${licenseKey}`;
+            }, 2000);
+        }
+
+        // Generate license key
+        function generateLicenseKey(planType) {
+            const prefix = planType.toUpperCase().substring(0, 4);
+            const timestamp = Date.now().toString(36).toUpperCase();
+            const random = Math.random().toString(36).substring(2, 8).toUpperCase();
+            return `${prefix}-${timestamp}-${random}`;
+        }
+
+        // Calculate expiry date
+        function calculateExpiryDate(planType) {
+            const now = new Date();
+            const expiryMap = {
+                'demo': 6 * 60 * 60 * 1000, // 6 hours
+                'first-time': 24 * 60 * 60 * 1000, // 1 day
+                'daily': 24 * 60 * 60 * 1000, // 1 day
+                '15-days': 15 * 24 * 60 * 60 * 1000, // 15 days
+                'monthly': 30 * 24 * 60 * 60 * 1000 // 30 days
+            };
+            return new Date(now.getTime() + (expiryMap[planType] || 24 * 60 * 60 * 1000)).toISOString();
+        }
+
+        // Send license email (simulation - in production, use backend)
+        function sendLicenseEmail(purchaseData) {
+            console.log('Sending license email to:', purchaseData.email);
+            console.log('License Key:', purchaseData.licenseKey);
+
+            // In production, make API call to backend to send actual email
+            // fetch('/api/send-license-email', {
+            //     method: 'POST',
+            //     headers: { 'Content-Type': 'application/json' },
+            //     body: JSON.stringify(purchaseData)
+            // });
+        }
+
+        // Listen for Razorpay payment success
+        window.addEventListener('message', function (event) {
+            if (event.data && event.data.razorpay_payment_id) {
+                handlePaymentSuccess(event.data);
+            }
+        });
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function () {
+            loadPlanDetails();
+            loadUserInfo();
+
+            // Check if user is logged in
+            const userEmail = sessionStorage.getItem('userEmail');
+            if (!userEmail || userEmail === 'guest@sainion.ai') {
+                // Show login prompt
+                if (confirm('You need to be logged in to make a purchase. Redirect to login page?')) {
+                    window.location.href = 'dashboard.html';
+                }
+            }
+        });
+
+        // For testing: Simulate payment success button
+        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+            const testButton = document.createElement('button');
+            testButton.textContent = '🧪 TEST: Simulate Payment Success';
+            testButton.style.cssText = 'margin: 20px auto; display: block; padding: 15px 30px; background: #ff9800; border: none; border-radius: 10px; color: white; font-weight: bold; cursor: pointer;';
+            testButton.onclick = function () {
+                handlePaymentSuccess({
+                    razorpay_payment_id: 'TEST_' + Date.now(),
+                    razorpay_signature: 'test_signature'
+                });
+            };
+            document.querySelector('.payment-container').insertBefore(testButton, document.querySelector('.back-button'));
+        }
+    </script>
+</body>
+
+</html>
