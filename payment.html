@@ -344,19 +344,7 @@
                 script.async = true;
                 form.appendChild(script);
                 container.appendChild(form);
-            }t featuresList = document.getElementById('planFeatures');
-            featuresList.innerHTML = '';
-            plan.features.forEach(feature => {
-                const li = document.createElement('li');
-                li.textContent = feature;
-                featuresList.appendChild(li);
-            });
-
-            // Store plan info for payment callback
-            sessionStorage.setItem('selectedPlan', JSON.stringify({
-                type: planType,
-                ...plan
-            }));
+            }
         }
 
         // Load user info from session
