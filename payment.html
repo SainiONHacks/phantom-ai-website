@@ -8,6 +8,8 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     <title>Complete Purchase - SainiON AI</title>
+    <!-- SMTP.js for Email Sending -->
+    <script src="https://smtpjs.com/v3/smtp.js"></script>
     <style>
         * {
             margin: 0;
@@ -425,40 +427,82 @@
             return new Date(now.getTime() + (expiryMap[planType] || 24 * 60 * 60 * 1000)).toISOString();
         }
 
-        // Send license email via backend API
+        // Send license email using SMTP.js (Direct from Browser)
         function sendLicenseEmail(purchaseData) {
-            console.log('Sending license email to:', purchaseData.email);
-            console.log('License Key:', purchaseData.licenseKey);
+            console.log('📧 Sending license email to:', purchaseData.email);
+            console.log('🔑 License Key:', purchaseData.licenseKey);
 
-            // Call backend API to send actual email
-            fetch('http://localhost:5000/api/send-license', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify({
-                    email: purchaseData.email,
-                    plan_type: sessionStorage.getItem('selectedPlan') ? JSON.parse(sessionStorage.getItem('selectedPlan')).type : 'daily',
-                    plan_name: purchaseData.plan,
-                    price: purchaseData.price,
-                    duration: purchaseData.duration,
-                    payment_id: purchaseData.paymentId
-                })
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        console.log('✅ License email sent successfully!');
-                        console.log('License Key:', data.license_key);
-                    } else {
-                        console.error('❌ Failed to send email:', data.error);
-                    }
-                })
-                .catch(error => {
-                    console.error('❌ Email API error:', error);
-                    // Don't block user even if email fails
-                });
+            // Email HTML template
+            const emailBody = `
+                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #f4f4f4; padding: 20px;">
+                    <div style="background: linear-gradient(135deg, #00ff88 0%, #00cc6a 100%); padding: 30px; text-align: center; border-radius: 10px 10px 0 0;">
+                        <h1 style="color: #000; margin: 0; font-size: 28px;">🎉 Welcome to SainiON AI!</h1>
+                    </div>
+                    
+                    <div style="background: #fff; padding: 30px; border-radius: 0 0 10px 10px;">
+                        <p style="font-size: 16px; color: #333; line-height: 1.6;">Thank you for your purchase! Your license key is ready to use.</p>
+                        
+                        <div style="background: #000; color: #00ff88; padding: 20px; margin: 20px 0; border-radius: 10px; text-align: center;">
+                            <h2 style="margin: 0 0 10px 0; font-size: 18px;">Your License Key:</h2>
+                            <div style="font-family: 'Courier New', monospace; font-size: 22px; letter-spacing: 2px; font-weight: bold;">
+                                ${purchaseData.licenseKey}
+                            </div>
+                        </div>
+                        
+                        <div style="background: #f9f9f9; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                            <h3 style="color: #333; margin-top: 0;">📋 Purchase Details:</h3>
+                            <ul style="color: #666; line-height: 1.8;">
+                                <li><strong>Plan:</strong> ${purchaseData.plan}</li>
+                                <li><strong>Price:</strong> ₹${purchaseData.price}</li>
+                                <li><strong>Duration:</strong> ${purchaseData.duration}</li>
+                                <li><strong>Expires:</strong> ${new Date(purchaseData.expiryDate).toLocaleDateString()}</li>
+                                <li><strong>Payment ID:</strong> ${purchaseData.paymentId}</li>
+                            </ul>
+                        </div>
+                        
+                        <div style="background: #e8f5ff; padding: 20px; border-radius: 10px; border-left: 4px solid #00ff88;">
+                            <h3 style="color: #333; margin-top: 0;">🚀 How to Activate:</h3>
+                            <ol style="color: #666; line-height: 1.8;">
+                                <li>Download SainiON AI from our website</li>
+                                <li>Open the application</li>
+                                <li>Click "Enter License Key"</li>
+                                <li>Paste your license key</li>
+                                <li>Click "Activate" and you're done!</li>
+                            </ol>
+                        </div>
+                        
+                        <p style="margin-top: 30px; color: #666; font-size: 14px; text-align: center;">
+                            Need help? Contact us at <a href="mailto:no-reply@sainionai.shop" style="color: #00ff88;">no-reply@sainionai.shop</a>
+                        </p>
+                        
+                        <hr style="border: none; border-top: 1px solid #ddd; margin: 20px 0;">
+                        
+                        <p style="color: #999; font-size: 12px; text-align: center;">
+                            SainiON AI - Your Ultimate AI Assistant<br>
+                            <a href="https://sainionhacks.github.io/sainion-ai-website/" style="color: #00ff88;">Visit Website</a>
+                        </p>
+                    </div>
+                </div>
+            `;
+
+            // Send email using SMTP.js
+            Email.send({
+                SecureToken: "YOUR_SECURE_TOKEN_HERE", // Get from smtpjs.com
+                To: purchaseData.email,
+                From: "no-reply@sainionai.shop",
+                Subject: `🎉 Your SainiON AI License Key - ${purchaseData.plan}`,
+                Body: emailBody
+            }).then(
+                message => {
+                    console.log('✅ Email sent successfully:', message);
+                    console.log('📧 Delivered to:', purchaseData.email);
+                }
+            ).catch(
+                error => {
+                    console.error('❌ Email sending failed:', error);
+                    // Don't block user flow even if email fails
+                }
+            );
         }
 
         // Listen for Razorpay payment success
