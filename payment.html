@@ -425,17 +425,40 @@
             return new Date(now.getTime() + (expiryMap[planType] || 24 * 60 * 60 * 1000)).toISOString();
         }
 
-        // Send license email (simulation - in production, use backend)
+        // Send license email via backend API
         function sendLicenseEmail(purchaseData) {
             console.log('Sending license email to:', purchaseData.email);
             console.log('License Key:', purchaseData.licenseKey);
 
-            // In production, make API call to backend to send actual email
-            // fetch('/api/send-license-email', {
-            //     method: 'POST',
-            //     headers: { 'Content-Type': 'application/json' },
-            //     body: JSON.stringify(purchaseData)
-            // });
+            // Call backend API to send actual email
+            fetch('http://localhost:5000/api/send-license', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    email: purchaseData.email,
+                    plan_type: sessionStorage.getItem('selectedPlan') ? JSON.parse(sessionStorage.getItem('selectedPlan')).type : 'daily',
+                    plan_name: purchaseData.plan,
+                    price: purchaseData.price,
+                    duration: purchaseData.duration,
+                    payment_id: purchaseData.paymentId
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        console.log('✅ License email sent successfully!');
+                        console.log('License Key:', data.license_key);
+                    } else {
+                        console.error('❌ Failed to send email:', data.error);
+                    }
+                })
+                .catch(error => {
+                    console.error('❌ Email API error:', error);
+                    // Don't block user even if email fails
+                });
         }
 
         // Listen for Razorpay payment success
